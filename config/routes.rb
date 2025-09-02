@@ -1,15 +1,56 @@
 Rails.application.routes.draw do
+  # Devise authentication
   devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  
+  # Root path
+  root "home#index"
+  
+  # Authenticated routes
+  authenticate :user do
+    resources :snippets do
+      member do
+        patch :toggle_visibility
+        get :raw
+      end
+      collection do
+        get :search
+      end
+    end
+    
+    resources :tags, except: [:show]
+    
+    resources :collections do
+      resources :snippets, only: [:index, :create, :destroy], controller: 'collection_snippets'
+    end
+    
+    # User profile
+    get 'profile', to: 'users#profile', as: :user_profile
+    get 'profile/edit', to: 'users#edit', as: :edit_user_profile
+    patch 'profile', to: 'users#update'
+  end
+  
+  # Public routes
+  namespace :public do
+    resources :snippets, only: [:index, :show] do
+      collection do
+        get :search
+      end
+    end
+    resources :collections, only: [:index, :show]
+    resources :users, only: [:show], param: :username
+  end
+  
+  # API routes for future use
+  namespace :api do
+    namespace :v1 do
+      resources :snippets, only: [:index, :show]
+    end
+  end
+  
+  # Health check
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/*
+  
+  # PWA
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end

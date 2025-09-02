@@ -1,0 +1,101 @@
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
+#
+# It's strongly recommended that you check this file into your version control system.
+
+ActiveRecord::Schema[7.2].define(version: 2025_09_02_231503) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "collection_snippets", force: :cascade do |t|
+    t.bigint "collection_id", null: false
+    t.bigint "snippet_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id", "snippet_id"], name: "index_collection_snippets_on_collection_id_and_snippet_id", unique: true
+    t.index ["collection_id"], name: "index_collection_snippets_on_collection_id"
+    t.index ["snippet_id"], name: "index_collection_snippets_on_snippet_id"
+  end
+
+  create_table "collections", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.integer "visibility"
+    t.bigint "user_id", null: false
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_collections_on_slug", unique: true
+    t.index ["user_id"], name: "index_collections_on_user_id"
+    t.index ["visibility"], name: "index_collections_on_visibility"
+  end
+
+  create_table "snippet_tags", force: :cascade do |t|
+    t.bigint "snippet_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["snippet_id", "tag_id"], name: "index_snippet_tags_on_snippet_id_and_tag_id", unique: true
+    t.index ["snippet_id"], name: "index_snippet_tags_on_snippet_id"
+    t.index ["tag_id"], name: "index_snippet_tags_on_tag_id"
+  end
+
+  create_table "snippets", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title"
+    t.text "description"
+    t.text "code"
+    t.string "language"
+    t.integer "visibility"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_snippets_on_created_at"
+    t.index ["language"], name: "index_snippets_on_language"
+    t.index ["slug"], name: "index_snippets_on_slug", unique: true
+    t.index ["user_id"], name: "index_snippets_on_user_id"
+    t.index ["visibility"], name: "index_snippets_on_visibility"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.string "color"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "user_id"], name: "index_tags_on_name_and_user_id", unique: true
+    t.index ["user_id"], name: "index_tags_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "username"
+    t.string "name"
+    t.text "bio"
+    t.string "avatar"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
+  end
+
+  add_foreign_key "collection_snippets", "collections"
+  add_foreign_key "collection_snippets", "snippets"
+  add_foreign_key "collections", "users"
+  add_foreign_key "snippet_tags", "snippets"
+  add_foreign_key "snippet_tags", "tags"
+  add_foreign_key "snippets", "users"
+  add_foreign_key "tags", "users"
+end

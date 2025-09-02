@@ -17,46 +17,69 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body class="bg-gray-50">
-    <nav class="bg-white shadow-sm border-b">
+  <body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-200" data-controller="theme">
+    <nav class="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-800">
       <div class="container mx-auto px-4">
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center">
-            <%= link_to "GAZE", root_path, class: "text-xl font-bold text-gray-900" %>
+            <%= link_to root_path, class: "text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center space-x-2" do %>
+              <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+              </svg>
+              <span>GAZE</span>
+            <% end %>
             <% if user_signed_in? %>
-              <div class="ml-10 flex items-baseline space-x-4">
-                <%= link_to "Snippets", snippets_path, class: "text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" %>
-                <%= link_to "Collections", collections_path, class: "text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" %>
-                <%= link_to "Tags", tags_path, class: "text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" %>
+              <div class="ml-10 flex items-baseline space-x-1">
+                <%= link_to "Snippets", snippets_path, class: "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-md text-sm font-medium transition-colors" %>
+                <%= link_to "Collections", collections_path, class: "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-md text-sm font-medium transition-colors" %>
+                <%= link_to "Tags", tags_path, class: "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-md text-sm font-medium transition-colors" %>
               </div>
             <% end %>
           </div>
           
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-3">
             <% if user_signed_in? %>
-              <%= link_to "New Snippet", new_snippet_path, class: "bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700" %>
+              <%= link_to new_snippet_path, class: "bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors flex items-center space-x-2" do %>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                <span>New Snippet</span>
+              <% end %>
               <div class="relative">
-                <%= link_to current_user.name || current_user.username || current_user.email, user_profile_path, class: "text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" %>
+                <%= link_to current_user.name || current_user.username || current_user.email, user_profile_path, class: "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-md text-sm font-medium transition-colors" %>
               </div>
-              <%= link_to "Sign Out", destroy_user_session_path, method: :delete, data: { "turbo-method": :delete }, class: "text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" %>
+              <%= link_to destroy_user_session_path, method: :delete, data: { "turbo-method": :delete }, class: "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-md text-sm font-medium transition-colors", title: "Sign Out" do %>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                </svg>
+              <% end %>
             <% else %>
-              <%= link_to "Browse", public_snippets_path, class: "text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" %>
-              <%= link_to "Sign In", new_user_session_path, class: "text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" %>
-              <%= link_to "Sign Up", new_user_registration_path, class: "bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700" %>
+              <%= link_to "Browse", public_snippets_path, class: "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-md text-sm font-medium transition-colors" %>
+              <%= link_to "Sign In", new_user_session_path, class: "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-md text-sm font-medium transition-colors" %>
+              <%= link_to "Sign Up", new_user_registration_path, class: "bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors" %>
             <% end %>
+            
+            <!-- Theme Toggle -->
+            <button data-action="click->theme#toggle" class="p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              <span data-theme-target="icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                </svg>
+              </span>
+            </button>
           </div>
         </div>
       </div>
     </nav>
     
     <% if notice.present? %>
-      <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3" role="alert">
+      <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200 px-4 py-3" role="alert">
         <p><%= notice %></p>
       </div>
     <% end %>
     
     <% if alert.present? %>
-      <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3" role="alert">
+      <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 px-4 py-3" role="alert">
         <p><%= alert %></p>
       </div>
     <% end %>

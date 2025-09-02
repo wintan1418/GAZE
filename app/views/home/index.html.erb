@@ -1,2 +1,138 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<div class="max-w-7xl mx-auto">
+  <!-- Hero Section -->
+  <div class="text-center py-16 lg:py-24">
+    <h1 class="text-4xl lg:text-6xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+      Save & Share Code Snippets
+      <span class="block text-blue-600 dark:text-blue-400 mt-2">Like a Pro</span>
+    </h1>
+    <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-8">
+      GAZE is a beautiful code snippet manager for developers. Save, organize, and share your code snippets with syntax highlighting and powerful search.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <% if user_signed_in? %>
+        <%= link_to new_snippet_path, class: "inline-flex items-center px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors" do %>
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          Create Your First Snippet
+        <% end %>
+      <% else %>
+        <%= link_to new_user_registration_path, class: "inline-flex items-center px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors" do %>
+          Get Started Free
+        <% end %>
+        <%= link_to public_snippets_path, class: "inline-flex items-center px-6 py-3 bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-medium rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors" do %>
+          Browse Public Snippets
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Features Grid -->
+  <div class="grid md:grid-cols-3 gap-8 mb-16">
+    <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800">
+      <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mb-4">
+        <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold mb-2">Syntax Highlighting</h3>
+      <p class="text-gray-600 dark:text-gray-400">
+        Beautiful syntax highlighting for all major programming languages with both light and dark themes.
+      </p>
+    </div>
+
+    <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800">
+      <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mb-4">
+        <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold mb-2">Smart Organization</h3>
+      <p class="text-gray-600 dark:text-gray-400">
+        Organize snippets with tags and collections. Find what you need instantly with powerful search.
+      </p>
+    </div>
+
+    <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800">
+      <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4">
+        <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m9.632 4.684C18.886 14.938 19 14.482 19 14c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684M5.316 13.342A3 3 0 004 12c0-.482.114-.938.316-1.342m0 2.684a3 3 0 010-2.684m9.632 4.684c.202.404.316.86.316 1.342 0 .482-.114.938-.316 1.342m0-2.684a3 3 0 110 2.684"></path>
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold mb-2">Share & Collaborate</h3>
+      <p class="text-gray-600 dark:text-gray-400">
+        Share snippets publicly or keep them private. Build your developer portfolio with your best code.
+      </p>
+    </div>
+  </div>
+
+  <% if @recent_snippets.any? %>
+    <!-- Recent Public Snippets -->
+    <div class="mb-16">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Recent Public Snippets</h2>
+        <%= link_to "View All →", public_snippets_path, class: "text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium" %>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% @recent_snippets.each do |snippet| %>
+          <div class="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 hover:shadow-md transition-shadow">
+            <%= link_to public_snippet_path(snippet), class: "block p-6" do %>
+              <div class="flex items-start justify-between mb-3">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 line-clamp-1">
+                  <%= snippet.title %>
+                </h3>
+                <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
+                  <%= snippet.language %>
+                </span>
+              </div>
+              
+              <% if snippet.description.present? %>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                  <%= snippet.description %>
+                </p>
+              <% end %>
+              
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <div class="w-6 h-6 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+                  <span class="text-sm text-gray-600 dark:text-gray-400">
+                    <%= snippet.user.username || snippet.user.email.split('@').first %>
+                  </span>
+                </div>
+                <span class="text-xs text-gray-500 dark:text-gray-500">
+                  <%= time_ago_in_words(snippet.created_at) %> ago
+                </span>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @popular_tags.any? %>
+    <!-- Popular Tags -->
+    <div class="mb-16">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Popular Tags</h2>
+      <div class="flex flex-wrap gap-2">
+        <% @popular_tags.each do |tag| %>
+          <span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium" style="background-color: <%= tag.color %>20; color: <%= tag.color %>;">
+            <%= tag.name %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- CTA Section -->
+  <div class="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 rounded-2xl p-8 lg:p-12 text-center text-white">
+    <h2 class="text-3xl font-bold mb-4">Ready to organize your code?</h2>
+    <p class="text-xl mb-8 text-blue-100">
+      Join developers who use GAZE to save time and share knowledge.
+    </p>
+    <% unless user_signed_in? %>
+      <%= link_to "Get Started Free", new_user_registration_path, class: "inline-flex items-center px-6 py-3 bg-white text-blue-600 font-medium rounded-lg hover:bg-gray-100 transition-colors" %>
+    <% end %>
+  </div>
+</div>

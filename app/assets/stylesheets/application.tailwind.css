@@ -1,1 +1,59 @@
 @import "tailwindcss";
+
+/* Custom styles for syntax highlighting */
+.syntax-highlighted {
+  @apply rounded-lg p-4 overflow-x-auto text-sm;
+}
+
+/* Dark mode syntax highlighting */
+.dark .syntax-highlighted {
+  @apply bg-gray-900;
+}
+
+/* Light mode syntax highlighting */
+.syntax-highlighted {
+  @apply bg-gray-100;
+}
+
+/* Rouge syntax highlighting theme adjustments */
+.highlight .c { @apply text-gray-500 italic; } /* Comment */
+.highlight .k { @apply text-purple-600 font-semibold; } /* Keyword */
+.highlight .o { @apply text-gray-700; } /* Operator */
+.highlight .p { @apply text-gray-700; } /* Punctuation */
+.highlight .n { @apply text-gray-800; } /* Name */
+.highlight .s { @apply text-green-600; } /* String */
+.highlight .m { @apply text-blue-600; } /* Number */
+
+.dark .highlight .c { @apply text-gray-400; }
+.dark .highlight .k { @apply text-purple-400; }
+.dark .highlight .o { @apply text-gray-300; }
+.dark .highlight .p { @apply text-gray-300; }
+.dark .highlight .n { @apply text-gray-200; }
+.dark .highlight .s { @apply text-green-400; }
+.dark .highlight .m { @apply text-blue-400; }
+
+/* Custom scrollbar for code blocks */
+.syntax-highlighted::-webkit-scrollbar {
+  @apply h-2;
+}
+
+.syntax-highlighted::-webkit-scrollbar-track {
+  @apply bg-gray-200 rounded;
+}
+
+.dark .syntax-highlighted::-webkit-scrollbar-track {
+  @apply bg-gray-800;
+}
+
+.syntax-highlighted::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded;
+}
+
+.dark .syntax-highlighted::-webkit-scrollbar-thumb {
+  @apply bg-gray-600;
+}
+
+/* Tag colors with dark mode support */
+.tag-color {
+  @apply px-2 py-1 rounded-full text-xs font-medium;
+}

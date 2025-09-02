@@ -71,10 +71,18 @@ brakeman
 
 **IMPORTANT**: When creating commits, use only:
 ```bash
-git commit
+git commit -m "Your commit message"
 ```
 
 Do NOT use `git commit --author` or any author flags. Let git use the default author configuration.
+
+**NEVER** include in commit messages:
+- "Generated with Claude Code" 
+- "Co-Authored-By: Claude"
+- Any reference to AI assistance
+- Any authorship attribution
+
+Keep commit messages clean, professional, and focused only on what changed.
 
 ## Code Standards
 

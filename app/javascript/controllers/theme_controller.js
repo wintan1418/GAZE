@@ -4,8 +4,14 @@ export default class extends Controller {
   static targets = ["icon"]
   
   connect() {
-    // Check for saved theme preference or default to 'light'
-    const theme = localStorage.getItem('theme') || 'light'
+    // Check for saved theme preference, system preference, or default to 'light'
+    let theme = localStorage.getItem('theme')
+    
+    if (!theme) {
+      // Check system preference
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    }
+    
     this.setTheme(theme)
   }
   

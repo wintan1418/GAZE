@@ -15,22 +15,72 @@
   @apply bg-gray-100;
 }
 
-/* Rouge syntax highlighting theme adjustments */
+/* Rouge syntax highlighting theme */
+.highlight {
+  @apply bg-white dark:bg-gray-900 rounded-md overflow-x-auto;
+  font-family: 'JetBrains Mono', 'Monaco', 'Consolas', monospace;
+  line-height: 1.5;
+}
+
+.highlight pre {
+  @apply m-0 p-6 whitespace-pre-wrap;
+}
+
+.highlight table {
+  @apply w-full border-collapse;
+}
+
+.highlight td {
+  @apply p-0 border-0 align-top;
+}
+
+.highlight .gl {
+  @apply pr-4 text-gray-400 dark:text-gray-500 select-none;
+  border-right: 1px solid #e5e7eb;
+  min-width: 40px;
+}
+
+.dark .highlight .gl {
+  border-right-color: #374151;
+}
+
+.highlight .code {
+  @apply pl-4 pr-6;
+}
+
+/* Syntax highlighting colors - Light theme */
 .highlight .c { @apply text-gray-500 italic; } /* Comment */
 .highlight .k { @apply text-purple-600 font-semibold; } /* Keyword */
+.highlight .kd { @apply text-blue-600 font-semibold; } /* Keyword Declaration */
+.highlight .kt { @apply text-blue-600 font-semibold; } /* Keyword Type */
 .highlight .o { @apply text-gray-700; } /* Operator */
 .highlight .p { @apply text-gray-700; } /* Punctuation */
 .highlight .n { @apply text-gray-800; } /* Name */
+.highlight .nf { @apply text-blue-700; } /* Name Function */
+.highlight .nc { @apply text-orange-600; } /* Name Class */
 .highlight .s { @apply text-green-600; } /* String */
+.highlight .s2 { @apply text-green-600; } /* String Double */
+.highlight .s1 { @apply text-green-600; } /* String Single */
 .highlight .m { @apply text-blue-600; } /* Number */
+.highlight .mi { @apply text-blue-600; } /* Number Integer */
+.highlight .mf { @apply text-blue-600; } /* Number Float */
 
+/* Syntax highlighting colors - Dark theme */
 .dark .highlight .c { @apply text-gray-400; }
 .dark .highlight .k { @apply text-purple-400; }
+.dark .highlight .kd { @apply text-blue-400; }
+.dark .highlight .kt { @apply text-blue-400; }
 .dark .highlight .o { @apply text-gray-300; }
 .dark .highlight .p { @apply text-gray-300; }
 .dark .highlight .n { @apply text-gray-200; }
+.dark .highlight .nf { @apply text-blue-300; }
+.dark .highlight .nc { @apply text-orange-400; }
 .dark .highlight .s { @apply text-green-400; }
+.dark .highlight .s2 { @apply text-green-400; }
+.dark .highlight .s1 { @apply text-green-400; }
 .dark .highlight .m { @apply text-blue-400; }
+.dark .highlight .mi { @apply text-blue-400; }
+.dark .highlight .mf { @apply text-blue-400; }
 
 /* Custom scrollbar for code blocks */
 .syntax-highlighted::-webkit-scrollbar {

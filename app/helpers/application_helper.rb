@@ -29,7 +29,10 @@ module ApplicationHelper
   end
   
   def syntax_highlight(code, language)
-    formatter = Rouge::Formatters::HTML.new
+    formatter = Rouge::Formatters::HTML.new(
+      css_class: 'highlight',
+      line_numbers: true
+    )
     lexer = Rouge::Lexer.find(language) || Rouge::Lexers::PlainText.new
     formatter.format(lexer.lex(code))
   end

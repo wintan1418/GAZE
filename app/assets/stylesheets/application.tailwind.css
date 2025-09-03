@@ -15,72 +15,153 @@
   @apply bg-gray-100;
 }
 
-/* Rouge syntax highlighting theme */
+/* Code Editor Terminal Theme */
 .highlight {
-  @apply bg-white dark:bg-gray-900 rounded-md overflow-x-auto;
-  font-family: 'JetBrains Mono', 'Monaco', 'Consolas', monospace;
+  background: #1e1e1e !important; /* VS Code Dark */
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+  font-size: 14px;
   line-height: 1.5;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.highlight pre {
-  @apply m-0 p-6 whitespace-pre-wrap;
+.dark .highlight {
+  background: #0d1117 !important; /* GitHub Dark */
 }
 
 .highlight table {
-  @apply w-full border-collapse;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.highlight pre {
+  margin: 0;
+  padding: 0;
+  background: transparent !important;
+  overflow: visible;
+  white-space: pre;
 }
 
 .highlight td {
-  @apply p-0 border-0 align-top;
+  padding: 0;
+  border: 0;
+  vertical-align: top;
 }
 
+/* Line Numbers */
 .highlight .gl {
-  @apply pr-4 text-gray-400 dark:text-gray-500 select-none;
-  border-right: 1px solid #e5e7eb;
-  min-width: 40px;
+  background: #2d2d2d !important;
+  color: #6e7681 !important;
+  padding: 12px 16px 12px 12px;
+  border-right: 1px solid #444;
+  text-align: right;
+  user-select: none;
+  min-width: 50px;
+  font-weight: 400;
 }
 
 .dark .highlight .gl {
-  border-right-color: #374151;
+  background: #161b22 !important;
+  color: #484f58 !important;
+  border-right-color: #30363d;
 }
 
+/* Code Content */
 .highlight .code {
-  @apply pl-4 pr-6;
+  background: #1e1e1e !important;
+  color: #d4d4d4 !important;
+  padding: 12px 16px;
+  overflow-x: auto;
 }
 
-/* Syntax highlighting colors - Light theme */
-.highlight .c { @apply text-gray-500 italic; } /* Comment */
-.highlight .k { @apply text-purple-600 font-semibold; } /* Keyword */
-.highlight .kd { @apply text-blue-600 font-semibold; } /* Keyword Declaration */
-.highlight .kt { @apply text-blue-600 font-semibold; } /* Keyword Type */
-.highlight .o { @apply text-gray-700; } /* Operator */
-.highlight .p { @apply text-gray-700; } /* Punctuation */
-.highlight .n { @apply text-gray-800; } /* Name */
-.highlight .nf { @apply text-blue-700; } /* Name Function */
-.highlight .nc { @apply text-orange-600; } /* Name Class */
-.highlight .s { @apply text-green-600; } /* String */
-.highlight .s2 { @apply text-green-600; } /* String Double */
-.highlight .s1 { @apply text-green-600; } /* String Single */
-.highlight .m { @apply text-blue-600; } /* Number */
-.highlight .mi { @apply text-blue-600; } /* Number Integer */
-.highlight .mf { @apply text-blue-600; } /* Number Float */
+.dark .highlight .code {
+  background: #0d1117 !important;
+  color: #e6edf3 !important;
+}
 
-/* Syntax highlighting colors - Dark theme */
-.dark .highlight .c { @apply text-gray-400; }
-.dark .highlight .k { @apply text-purple-400; }
-.dark .highlight .kd { @apply text-blue-400; }
-.dark .highlight .kt { @apply text-blue-400; }
-.dark .highlight .o { @apply text-gray-300; }
-.dark .highlight .p { @apply text-gray-300; }
-.dark .highlight .n { @apply text-gray-200; }
-.dark .highlight .nf { @apply text-blue-300; }
-.dark .highlight .nc { @apply text-orange-400; }
-.dark .highlight .s { @apply text-green-400; }
-.dark .highlight .s2 { @apply text-green-400; }
-.dark .highlight .s1 { @apply text-green-400; }
-.dark .highlight .m { @apply text-blue-400; }
-.dark .highlight .mi { @apply text-blue-400; }
-.dark .highlight .mf { @apply text-blue-400; }
+/* VS Code Dark Theme Colors */
+.highlight .c { color: #6a9955 !important; font-style: italic; } /* Comment */
+.highlight .k { color: #569cd6 !important; font-weight: bold; } /* Keyword */
+.highlight .kd { color: #569cd6 !important; font-weight: bold; } /* Keyword Declaration */
+.highlight .kt { color: #569cd6 !important; font-weight: bold; } /* Keyword Type */
+.highlight .kn { color: #c586c0 !important; } /* Keyword Namespace */
+.highlight .kp { color: #569cd6 !important; } /* Keyword Pseudo */
+.highlight .kr { color: #569cd6 !important; } /* Keyword Reserved */
+.highlight .o { color: #d4d4d4 !important; } /* Operator */
+.highlight .p { color: #d4d4d4 !important; } /* Punctuation */
+.highlight .n { color: #9cdcfe !important; } /* Name */
+.highlight .nf { color: #dcdcaa !important; } /* Function Name */
+.highlight .nc { color: #4ec9b0 !important; } /* Class Name */
+.highlight .nd { color: #dcdcaa !important; } /* Decorator */
+.highlight .s { color: #ce9178 !important; } /* String */
+.highlight .s2 { color: #ce9178 !important; } /* String Double */
+.highlight .s1 { color: #ce9178 !important; } /* String Single */
+.highlight .sb { color: #ce9178 !important; } /* String Backtick */
+.highlight .sc { color: #ce9178 !important; } /* String Char */
+.highlight .sd { color: #6a9955 !important; } /* String Doc */
+.highlight .se { color: #d7ba7d !important; } /* String Escape */
+.highlight .sh { color: #ce9178 !important; } /* String Heredoc */
+.highlight .si { color: #ce9178 !important; } /* String Interpol */
+.highlight .sx { color: #ce9178 !important; } /* String Other */
+.highlight .sr { color: #d16969 !important; } /* String Regex */
+.highlight .ss { color: #ce9178 !important; } /* String Symbol */
+.highlight .m { color: #b5cea8 !important; } /* Number */
+.highlight .mi { color: #b5cea8 !important; } /* Number Integer */
+.highlight .mf { color: #b5cea8 !important; } /* Number Float */
+.highlight .mh { color: #b5cea8 !important; } /* Number Hex */
+.highlight .mo { color: #b5cea8 !important; } /* Number Oct */
+.highlight .mb { color: #b5cea8 !important; } /* Number Bin */
+.highlight .nt { color: #569cd6 !important; } /* Name Tag */
+.highlight .na { color: #92c5f8 !important; } /* Name Attribute */
+.highlight .nb { color: #4ec9b0 !important; } /* Name Builtin */
+.highlight .bp { color: #4ec9b0 !important; } /* Name Builtin Pseudo */
+.highlight .nv { color: #9cdcfe !important; } /* Name Variable */
+.highlight .vi { color: #9cdcfe !important; } /* Name Variable Instance */
+.highlight .vg { color: #9cdcfe !important; } /* Name Variable Global */
+.highlight .vc { color: #4fc1ff !important; } /* Name Variable Class */
+
+/* GitHub Dark Theme (for dark mode) */
+.dark .highlight .c { color: #8b949e !important; } /* Comment */
+.dark .highlight .k { color: #ff7b72 !important; } /* Keyword */
+.dark .highlight .kd { color: #ff7b72 !important; }
+.dark .highlight .kt { color: #ff7b72 !important; }
+.dark .highlight .kn { color: #ff7b72 !important; }
+.dark .highlight .kp { color: #79c0ff !important; }
+.dark .highlight .kr { color: #ff7b72 !important; }
+.dark .highlight .o { color: #e6edf3 !important; }
+.dark .highlight .p { color: #e6edf3 !important; }
+.dark .highlight .n { color: #e6edf3 !important; }
+.dark .highlight .nf { color: #d2a8ff !important; }
+.dark .highlight .nc { color: #f0883e !important; }
+.dark .highlight .nd { color: #d2a8ff !important; }
+.dark .highlight .s { color: #a5d6ff !important; }
+.dark .highlight .s2 { color: #a5d6ff !important; }
+.dark .highlight .s1 { color: #a5d6ff !important; }
+.dark .highlight .sb { color: #a5d6ff !important; }
+.dark .highlight .sc { color: #a5d6ff !important; }
+.dark .highlight .sd { color: #8b949e !important; }
+.dark .highlight .se { color: #79c0ff !important; }
+.dark .highlight .sh { color: #a5d6ff !important; }
+.dark .highlight .si { color: #a5d6ff !important; }
+.dark .highlight .sx { color: #a5d6ff !important; }
+.dark .highlight .sr { color: #7ee787 !important; }
+.dark .highlight .ss { color: #a5d6ff !important; }
+.dark .highlight .m { color: #79c0ff !important; }
+.dark .highlight .mi { color: #79c0ff !important; }
+.dark .highlight .mf { color: #79c0ff !important; }
+.dark .highlight .mh { color: #79c0ff !important; }
+.dark .highlight .mo { color: #79c0ff !important; }
+.dark .highlight .mb { color: #79c0ff !important; }
+.dark .highlight .nt { color: #7ee787 !important; }
+.dark .highlight .na { color: #79c0ff !important; }
+.dark .highlight .nb { color: #ffa657 !important; }
+.dark .highlight .bp { color: #ffa657 !important; }
+.dark .highlight .nv { color: #ffa657 !important; }
+.dark .highlight .vi { color: #ffa657 !important; }
+.dark .highlight .vg { color: #ffa657 !important; }
+.dark .highlight .vc { color: #79c0ff !important; }
 
 /* Custom scrollbar for code blocks */
 .syntax-highlighted::-webkit-scrollbar {

@@ -116,21 +116,8 @@
       </button>
     </div>
     
-    <!-- Debug: Show raw code -->
-    <div style="display: none;">
-      Raw code: "<%= @snippet.code.inspect %>"<br>
-      Length: <%= @snippet.code.length %><br>
-      Lines: <%= @snippet.code.lines.count %>
-    </div>
-    
     <div class="syntax-highlighted">
-      <% begin %>
-        <%== syntax_highlight(@snippet.code, @snippet.language) %>
-      <% rescue => e %>
-        <!-- Fallback if Rouge fails -->
-        <pre class="bg-gray-100 dark:bg-gray-800 p-6 rounded-md overflow-x-auto text-sm font-mono whitespace-pre-wrap"><%= @snippet.code %></pre>
-        <small class="text-red-500">Syntax highlighting error: <%= e.message %></small>
-      <% end %>
+      <%== syntax_highlight(@snippet.code, @snippet.language) %>
     </div>
   </div>
 

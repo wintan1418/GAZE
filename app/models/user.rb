@@ -18,7 +18,7 @@ class User < ApplicationRecord
   
   # FriendlyId
   extend FriendlyId
-  friendly_id :username, use: :slugged
+  friendly_id :username, use: [:slugged, :finders]
   
   # Normalize username before validation
   before_validation :normalize_username
@@ -27,5 +27,9 @@ class User < ApplicationRecord
   
   def normalize_username
     self.username = username&.downcase&.strip
+  end
+  
+  def should_generate_new_friendly_id?
+    username_changed? || super
   end
 end

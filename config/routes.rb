@@ -29,7 +29,15 @@ Rails.application.routes.draw do
     patch 'profile', to: 'users#update'
   end
   
-  # Public routes
+  # Public routes (accessible without authentication)
+  get 'snippets/browse', to: 'public/snippets#index', as: :public_snippets
+  get 'snippets/browse/:id', to: 'public/snippets#show', as: :public_snippet
+  get 'snippets/browse/search', to: 'public/snippets#search', as: :public_snippets_search
+  
+  # Temporary snippet creation for unauthenticated users
+  get 'create', to: 'snippets#new', as: :create_snippet
+  post 'create', to: 'snippets#create_temporary'
+  
   namespace :public do
     resources :snippets, only: [:index, :show] do
       collection do

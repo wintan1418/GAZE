@@ -1,5 +1,5 @@
 class SnippetsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:new, :create_temporary, :show]
   before_action :set_snippet, only: [:show, :edit, :update, :destroy, :toggle_visibility, :raw]
   before_action :authorize_snippet!, only: [:edit, :update, :destroy, :toggle_visibility]
   
@@ -8,6 +8,20 @@ class SnippetsController < ApplicationController
   end
   
   def show
+    # Allow access to public snippets for unauthenticated users
+    unless user_signed_in?
+      unless @snippet.public?
+        redirect_to new_user_session_path, alert: 'Please sign in to view private snippets.'
+        return
+      end
+    end
+    
+    # Check if user can view this snippet
+    if user_signed_in? && @snippet.private? && @snippet.user != current_user
+      redirect_to snippets_path, alert: 'Not authorized to view this snippet.'
+      return
+    end
+    
     respond_to do |format|
       format.html
       format.json { render json: @snippet }
@@ -15,7 +29,11 @@ class SnippetsController < ApplicationController
   end
   
   def new
-    @snippet = current_user.snippets.build
+    if user_signed_in?
+      @snippet = current_user.snippets.build
+    else
+      @snippet = Snippet.new
+    end
   end
   
   def create
@@ -24,6 +42,17 @@ class SnippetsController < ApplicationController
     if @snippet.save
       process_tags
       redirect_to @snippet, notice: 'Snippet was successfully created.'
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+  
+  def create_temporary
+    @snippet = Snippet.new(snippet_params.merge(visibility: :public_snippet))
+    
+    if @snippet.save
+      session[:temp_snippet_id] = @snippet.id
+      redirect_to @snippet, notice: 'Temporary snippet created! Sign up to save it permanently.'
     else
       render :new, status: :unprocessable_entity
     end

@@ -4,7 +4,10 @@
     <p class="text-gray-600 dark:text-gray-400">Save your code snippet with syntax highlighting and organization.</p>
   </div>
 
-  <%= form_with model: @snippet, local: true, class: "space-y-6" do |form| %>
+  <%= form_with model: @snippet, 
+      url: (user_signed_in? ? snippets_path : create_snippet_path),
+      local: true, 
+      class: "space-y-6" do |form| %>
     <% if @snippet.errors.any? %>
       <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
         <div class="flex">
@@ -131,15 +134,19 @@
       </div>
       
       <div class="flex items-center space-x-3">
-        <%= form.submit "Save as Draft", 
-            name: "draft", 
-            class: "inline-flex items-center px-4 py-2 bg-gray-600 dark:bg-gray-700 text-white rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors" %>
-        <%= form.submit "Create Snippet", 
-            class: "inline-flex items-center px-6 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors" do %>
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          Create Snippet
+        <% if user_signed_in? %>
+          <%= form.submit "Save as Draft", 
+              name: "draft", 
+              class: "inline-flex items-center px-4 py-2 bg-gray-600 dark:bg-gray-700 text-white rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors" %>
+          <%= form.submit "Create Snippet", 
+              class: "inline-flex items-center px-6 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors" %>
+        <% else %>
+          <%= form.submit "Create Temporary Snippet", 
+              class: "inline-flex items-center px-6 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors" %>
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            <%= link_to "Sign up", new_user_registration_path, class: "text-blue-600 dark:text-blue-400 hover:underline" %> 
+            to save snippets permanently
+          </p>
         <% end %>
       </div>
     </div>

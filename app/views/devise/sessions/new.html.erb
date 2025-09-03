@@ -1,26 +1,77 @@
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+<div class="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="flex justify-center">
+      <div class="flex items-center space-x-2">
+        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+        </svg>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">GAZE</h1>
+      </div>
     </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
+    <h2 class="mt-6 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
+      Sign in to your account
+    </h2>
+    <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+      Welcome back! Access your saved snippets and collections
+    </p>
   </div>
-<% end %>
 
-<%= render "devise/shared/links" %>
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white dark:bg-gray-900 py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-gray-200 dark:border-gray-800">
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
+        <div>
+          <%= f.label :email, class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
+          <div class="mt-1">
+            <%= f.email_field :email, 
+                autofocus: true, 
+                autocomplete: "email",
+                placeholder: "Enter your email address",
+                class: "appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.label :password, class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
+          <div class="mt-1">
+            <%= f.password_field :password, 
+                autocomplete: "current-password",
+                placeholder: "Enter your password",
+                class: "appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <% if devise_mapping.rememberable? %>
+            <div class="flex items-center">
+              <%= f.check_box :remember_me, class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded" %>
+              <%= f.label :remember_me, class: "ml-2 block text-sm text-gray-700 dark:text-gray-300" %>
+            </div>
+          <% end %>
+
+          <div class="text-sm">
+            <%= link_to "Forgot password?", new_password_path(resource_name), class: "font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300" %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.submit "Sign in", class: "w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+        </div>
+      <% end %>
+
+      <div class="mt-6">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300 dark:border-gray-700"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">New to GAZE?</span>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <%= link_to "Create an account", new_registration_path(resource_name), class: "w-full flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

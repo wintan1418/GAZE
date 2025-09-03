@@ -29,11 +29,16 @@ module ApplicationHelper
   end
   
   def syntax_highlight(code, language)
-    formatter = Rouge::Formatters::HTML.new(
+    # Ensure code has proper line breaks
+    formatted_code = code.strip
+    
+    formatter = Rouge::Formatters::HTMLTable.new(
+      Rouge::Formatters::HTML.new(css_class: 'highlight'),
       css_class: 'highlight',
-      line_numbers: true
+      gutter_class: 'gl',
+      code_class: 'code'
     )
     lexer = Rouge::Lexer.find(language) || Rouge::Lexers::PlainText.new
-    formatter.format(lexer.lex(code))
+    formatter.format(lexer.lex(formatted_code))
   end
 end

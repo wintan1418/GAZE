@@ -32,12 +32,18 @@ module ApplicationHelper
     # Ensure code has proper line breaks
     formatted_code = code.strip
     
-    formatter = Rouge::Formatters::HTMLTable.new(
+    # Use HTMLLineTable for better line numbers
+    formatter = Rouge::Formatters::HTMLLineTable.new(
       Rouge::Formatters::HTML.new(css_class: 'highlight'),
-      css_class: 'highlight',
-      gutter_class: 'gl',
-      code_class: 'code'
+      css_class: 'highlight-table',
+      gutter_class: 'gutter',
+      code_class: 'code',
+      table_class: 'rouge-table',
+      line_id: 'L%i',
+      line_class: 'lineno',
+      start_line: 1
     )
+    
     lexer = Rouge::Lexer.find(language) || Rouge::Lexers::PlainText.new
     formatter.format(lexer.lex(formatted_code))
   end

@@ -1,12 +1,12 @@
-<div class="max-w-6xl mx-auto">
+<div class="max-w-6xl mx-auto" data-controller="code-share">
   <!-- Header -->
   <div class="flex items-start justify-between mb-8">
     <div class="flex-1 min-w-0">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2" data-code-share-title-target="title">
         <%= @snippet.title %>
       </h1>
       <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
-        <span class="inline-flex items-center px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-medium">
+        <span class="inline-flex items-center px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-medium" data-code-share-language-target="language">
           <%= @snippet.language %>
         </span>
         <span class="inline-flex items-center px-2 py-1 rounded font-medium <%= @snippet.public? ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400' %>">
@@ -17,13 +17,49 @@
     </div>
     
     <div class="flex items-center space-x-2 ml-4">
-      <!-- Copy Button -->
+         
+      <!-- Copy Code Button -->
       <button data-controller="clipboard" data-clipboard-text="<%= @snippet.code %>" data-action="click->clipboard#copy" class="inline-flex items-center px-3 py-2 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
         </svg>
-        Copy
+        Copy Code
       </button>
+      
+      <!-- Copy as Image Button -->
+      <button data-action="click->code-share#copyAsImage" class="inline-flex items-center px-3 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+        Copy as Image
+      </button>
+
+      <!-- Share Menu Dropdown -->
+      <div class="relative" data-controller="dropdown">
+        <button data-action="click->dropdown#toggle" class="inline-flex items-center px-3 py-2 bg-green-600 dark:bg-green-500 text-white rounded-lg hover:bg-green-700 dark:hover:bg-green-600 transition-colors">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m9.632 4.684C18.886 14.938 19 14.482 19 14c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684M5.316 13.342A3 3 0 004 12c0-.482.114-.938.316-1.342m0 2.684a3 3 0 010-2.684m9.632 4.684c.202.404.316.86.316 1.342 0 .482-.114.938-.316 1.342m0-2.684a3 3 0 110 2.684"></path>
+          </svg>
+          Share
+        </button>
+        
+        <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+          <div class="py-1">
+            <button data-action="click->code-share#copyForSocial" class="flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+              <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m0 0V1a1 1 0 011-1h2a1 1 0 011 1v18a1 1 0 01-1 1H4a1 1 0 01-1-1V1a1 1 0 011-1h2a1 1 0 011 1v3z"></path>
+              </svg>
+              Copy for Social Media
+            </button>
+            <button data-action="click->code-share#copyAsMarkdown" class="flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+              <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+              Copy as Markdown
+            </button>
+          </div>
+        </div>
+      </div>
       
       <!-- Raw View -->
       <%= link_to raw_snippet_path(@snippet), class: "inline-flex items-center px-3 py-2 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors", target: "_blank" do %>
@@ -116,7 +152,7 @@
       </button>
     </div>
     
-    <div class="syntax-highlighted">
+    <div class="syntax-highlighted" data-code-share-code-block-target="codeBlock" data-code="<%= @snippet.code %>">
       <%== syntax_highlight(@snippet.code, @snippet.language) %>
     </div>
   </div>

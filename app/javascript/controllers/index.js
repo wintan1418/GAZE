@@ -18,3 +18,6 @@ application.register("clipboard", ClipboardController)
 
 import CodeEditorController from "./code_editor_controller"
 application.register("code-editor", CodeEditorController)
+
+import CodeShareController from "./code_share_controller"
+application.register("code-share", CodeShareController)

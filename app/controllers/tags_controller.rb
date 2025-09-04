@@ -3,7 +3,7 @@ class TagsController < ApplicationController
   before_action :set_tag, only: [:edit, :update, :destroy]
   
   def index
-    @tags = current_user.tags.includes(:snippets).by_usage
+    @pagy, @tags = pagy(current_user.tags.includes(:snippets).by_usage, items: 20)
   end
   
   def new

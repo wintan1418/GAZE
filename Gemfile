@@ -32,7 +32,7 @@ gem "friendly_id", "~> 5.5"
 gem "pg_search", "~> 2.3"
 
 # Background jobs
-gem "sidekiq", "~> 7.2"
+gem "sidekiq", "~> 8.0"
 
 # Use Redis adapter to run Action Cable in production
 gem "redis", ">= 4.0.1"

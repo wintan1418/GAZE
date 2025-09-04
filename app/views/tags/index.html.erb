@@ -1,2 +1,107 @@
-<h1>Tags#index</h1>
-<p>Find me in app/views/tags/index.html.erb</p>
+<div class="max-w-7xl mx-auto">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Tags</h1>
+      <p class="text-gray-600 dark:text-gray-400">Organize and categorize your code snippets with tags</p>
+    </div>
+    <%= link_to new_tag_path, class: "inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors" do %>
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+      </svg>
+      New Tag
+    <% end %>
+  </div>
+
+  <% if @tags.any? %>
+    <!-- Tags Grid -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
+      <% @tags.each do |tag| %>
+        <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 hover:shadow-md dark:hover:shadow-gray-800/20 transition-all group">
+          <%= link_to tag, class: "block p-6" do %>
+            <div class="flex items-center space-x-3 mb-4">
+              <!-- Tag Color Circle -->
+              <div class="w-6 h-6 rounded-full border-2 border-gray-200 dark:border-gray-600" style="background-color: <%= tag.color %>"></div>
+              
+              <div class="flex-1 min-w-0">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  #<%= tag.name %>
+                </h3>
+              </div>
+            </div>
+            
+            <div class="space-y-3">
+              <!-- Usage Stats -->
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400">
+                  <%= pluralize(tag.snippets.count, 'snippet') %>
+                </span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">
+                  <%= time_ago_in_words(tag.created_at) %> ago
+                </span>
+              </div>
+              
+              <!-- Recent Snippets Preview -->
+              <% if tag.snippets.any? %>
+                <div class="space-y-1">
+                  <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                    Recent snippets
+                  </div>
+                  <% tag.snippets.recent.limit(2).each do |snippet| %>
+                    <div class="text-xs text-gray-600 dark:text-gray-400 truncate">
+                      <span class="inline-flex items-center mr-2">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                      </span>
+                      <%= snippet.title %>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Popular Tags Section -->
+    <% if @tags.count > 6 %>
+      <div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Most Popular Tags</h2>
+        <div class="flex flex-wrap gap-3">
+          <% @tags.by_usage.limit(10).each do |tag| %>
+            <%= link_to tag, class: "inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors hover:opacity-80", style: "background-color: #{tag.color}20; color: #{tag.color};" do %>
+              #<%= tag.name %>
+              <span class="ml-2 px-2 py-0.5 bg-white bg-opacity-20 rounded-full text-xs">
+                <%= tag.snippets.count %>
+              </span>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Pagination -->
+    <div class="flex justify-center">
+      <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+    </div>
+  <% else %>
+    <!-- Empty State -->
+    <div class="text-center py-16">
+      <div class="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a1.994 1.994 0 01-1.414.586H7a4 4 0 01-4-4v-10a4 4 0 014-4z"></path>
+        </svg>
+      </div>
+      <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No tags yet</h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-6">Create your first tag to start organizing your code snippets.</p>
+      <%= link_to new_tag_path, class: "inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Create Your First Tag
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -66,11 +66,11 @@
     </div>
 
     <!-- Popular Tags Section -->
-    <% if @tags.count > 6 %>
+    <% if @pagy.count > 6 %>
       <div class="mb-8">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Most Popular Tags</h2>
         <div class="flex flex-wrap gap-3">
-          <% @tags.limit(10).each do |tag| %>
+          <% @popular_tags.each do |tag| %>
             <%= link_to tag, class: "inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors hover:opacity-80", style: "background-color: #{tag.color}20; color: #{tag.color};" do %>
               #<%= tag.name %>
               <span class="ml-2 px-2 py-0.5 bg-white bg-opacity-20 rounded-full text-xs">

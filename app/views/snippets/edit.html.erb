@@ -94,7 +94,7 @@
       </div>
     </div>
 
-    <!-- IDE-Style Code Editor -->
+    <!-- Real CodeMirror IDE -->
     <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden" data-controller="code-editor">
       <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
@@ -104,32 +104,24 @@
               <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
               <div class="w-3 h-3 bg-green-400 rounded-full"></div>
             </div>
-            <%= form.label :code, "Code Editor", class: "text-sm font-medium text-gray-700 dark:text-gray-300" %>
+            <%= form.label :code, "Professional Code Editor", class: "text-sm font-medium text-gray-700 dark:text-gray-300" %>
           </div>
           <div class="text-xs text-gray-500 dark:text-gray-400 flex items-center space-x-4">
-            <span>Tab: indent</span>
-            <span>Shift+Tab: outdent</span>
-            <span>Cmd+/: comment</span>
-            <span>Cmd+S: save</span>
+            <span>🎯 Real IDE Experience</span>
+            <span>Auto-complete</span>
+            <span>Bracket matching</span>
+            <span>Live syntax</span>
           </div>
         </div>
       </div>
       
-      <div class="relative">
-        <%= form.text_area :code, 
-            placeholder: "// Start typing your code here...", 
-            rows: 20,
-            class: "ide-editor w-full p-6 border-0 bg-gray-900 text-gray-100 font-mono text-sm leading-relaxed resize-none focus:ring-0 focus:outline-none",
-            style: "tab-size: 2; background-color: #1e1e1e; color: #d4d4d4;",
-            data: { 
-              code_editor_target: "editor",
-              action: "code-editor#handleInput code-editor#handleKeydown"
-            },
-            spellcheck: false,
-            autocomplete: "off",
-            autocorrect: "off",
-            autocapitalize: "off" %>
-      </div>
+      <!-- Hidden textarea for form submission -->
+      <%= form.text_area :code, 
+          class: "hidden",
+          data: { code_editor_target: "textarea" } %>
+      
+      <!-- CodeMirror container -->
+      <div data-code-editor-target="container" class="codemirror-container"></div>
     </div>
 
     <!-- Action Buttons -->

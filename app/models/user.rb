@@ -8,6 +8,9 @@ class User < ApplicationRecord
   has_many :snippets, dependent: :destroy
   has_many :tags, dependent: :destroy
   has_many :collections, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :edit_requests_made, class_name: 'EditRequest', foreign_key: 'requester_id', dependent: :destroy
+  has_many :edit_requests_received, class_name: 'EditRequest', through: :snippets, source: :edit_requests
   
   # Validations
   validates :username, presence: true, uniqueness: { case_sensitive: false }, 

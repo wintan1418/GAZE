@@ -4,6 +4,7 @@ class TagsController < ApplicationController
   
   def index
     @pagy, @tags = pagy(current_user.tags.includes(:snippets).by_usage, items: 20)
+    @popular_tags = current_user.tags.includes(:snippets).by_usage.limit(10)
   end
   
   def new

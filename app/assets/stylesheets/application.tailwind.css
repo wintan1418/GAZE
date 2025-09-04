@@ -1,1 +1,263 @@
 @import "tailwindcss";
+
+/* Custom styles for syntax highlighting */
+.syntax-highlighted {
+  @apply rounded-lg p-4 overflow-x-auto text-sm;
+}
+
+/* Dark mode syntax highlighting */
+.dark .syntax-highlighted {
+  @apply bg-gray-900;
+}
+
+/* Light mode syntax highlighting */
+.syntax-highlighted {
+  @apply bg-gray-100;
+}
+
+/* Professional Code Display - Matching IDE Style */
+.syntax-highlighted {
+  @apply rounded-lg overflow-hidden;
+  background: transparent !important;
+}
+
+.rouge-table {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  background: #1e1e1e !important;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.highlight-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.highlight-table td {
+  padding: 0;
+  vertical-align: top;
+}
+
+/* Line Numbers Gutter */
+.highlight-table .gutter {
+  width: 50px;
+  background: #252526 !important;
+  color: #858585 !important;
+  text-align: right;
+  padding-right: 16px;
+  padding-left: 8px;
+  user-select: none;
+  border-right: 1px solid #3e3e42;
+}
+
+.highlight-table .lineno {
+  color: #858585 !important;
+  padding: 0 16px 0 8px;
+  text-align: right;
+  display: inline-block;
+  min-width: 40px;
+}
+
+/* Code Area */
+.highlight-table .code {
+  background: #1e1e1e !important;
+  padding: 0 16px;
+  overflow-x: auto;
+}
+
+.highlight-table pre {
+  margin: 0;
+  padding: 12px 0;
+  background: transparent !important;
+  color: #d4d4d4 !important;
+  white-space: pre;
+  overflow: visible;
+}
+
+/* VS Code Dark Theme Colors */
+.highlight .c { color: #6a9955 !important; font-style: italic; } /* Comment */
+.highlight .k { color: #569cd6 !important; font-weight: bold; } /* Keyword */
+.highlight .kd { color: #569cd6 !important; font-weight: bold; } /* Keyword Declaration */
+.highlight .kt { color: #569cd6 !important; font-weight: bold; } /* Keyword Type */
+.highlight .kn { color: #c586c0 !important; } /* Keyword Namespace */
+.highlight .kp { color: #569cd6 !important; } /* Keyword Pseudo */
+.highlight .kr { color: #569cd6 !important; } /* Keyword Reserved */
+.highlight .o { color: #d4d4d4 !important; } /* Operator */
+.highlight .p { color: #d4d4d4 !important; } /* Punctuation */
+.highlight .n { color: #9cdcfe !important; } /* Name */
+.highlight .nf { color: #dcdcaa !important; } /* Function Name */
+.highlight .nc { color: #4ec9b0 !important; } /* Class Name */
+.highlight .nd { color: #dcdcaa !important; } /* Decorator */
+.highlight .s { color: #ce9178 !important; } /* String */
+.highlight .s2 { color: #ce9178 !important; } /* String Double */
+.highlight .s1 { color: #ce9178 !important; } /* String Single */
+.highlight .sb { color: #ce9178 !important; } /* String Backtick */
+.highlight .sc { color: #ce9178 !important; } /* String Char */
+.highlight .sd { color: #6a9955 !important; } /* String Doc */
+.highlight .se { color: #d7ba7d !important; } /* String Escape */
+.highlight .sh { color: #ce9178 !important; } /* String Heredoc */
+.highlight .si { color: #ce9178 !important; } /* String Interpol */
+.highlight .sx { color: #ce9178 !important; } /* String Other */
+.highlight .sr { color: #d16969 !important; } /* String Regex */
+.highlight .ss { color: #ce9178 !important; } /* String Symbol */
+.highlight .m { color: #b5cea8 !important; } /* Number */
+.highlight .mi { color: #b5cea8 !important; } /* Number Integer */
+.highlight .mf { color: #b5cea8 !important; } /* Number Float */
+.highlight .mh { color: #b5cea8 !important; } /* Number Hex */
+.highlight .mo { color: #b5cea8 !important; } /* Number Oct */
+.highlight .mb { color: #b5cea8 !important; } /* Number Bin */
+.highlight .nt { color: #569cd6 !important; } /* Name Tag */
+.highlight .na { color: #92c5f8 !important; } /* Name Attribute */
+.highlight .nb { color: #4ec9b0 !important; } /* Name Builtin */
+.highlight .bp { color: #4ec9b0 !important; } /* Name Builtin Pseudo */
+.highlight .nv { color: #9cdcfe !important; } /* Name Variable */
+.highlight .vi { color: #9cdcfe !important; } /* Name Variable Instance */
+.highlight .vg { color: #9cdcfe !important; } /* Name Variable Global */
+.highlight .vc { color: #4fc1ff !important; } /* Name Variable Class */
+
+/* GitHub Dark Theme (for dark mode) */
+.dark .highlight .c { color: #8b949e !important; } /* Comment */
+.dark .highlight .k { color: #ff7b72 !important; } /* Keyword */
+.dark .highlight .kd { color: #ff7b72 !important; }
+.dark .highlight .kt { color: #ff7b72 !important; }
+.dark .highlight .kn { color: #ff7b72 !important; }
+.dark .highlight .kp { color: #79c0ff !important; }
+.dark .highlight .kr { color: #ff7b72 !important; }
+.dark .highlight .o { color: #e6edf3 !important; }
+.dark .highlight .p { color: #e6edf3 !important; }
+.dark .highlight .n { color: #e6edf3 !important; }
+.dark .highlight .nf { color: #d2a8ff !important; }
+.dark .highlight .nc { color: #f0883e !important; }
+.dark .highlight .nd { color: #d2a8ff !important; }
+.dark .highlight .s { color: #a5d6ff !important; }
+.dark .highlight .s2 { color: #a5d6ff !important; }
+.dark .highlight .s1 { color: #a5d6ff !important; }
+.dark .highlight .sb { color: #a5d6ff !important; }
+.dark .highlight .sc { color: #a5d6ff !important; }
+.dark .highlight .sd { color: #8b949e !important; }
+.dark .highlight .se { color: #79c0ff !important; }
+.dark .highlight .sh { color: #a5d6ff !important; }
+.dark .highlight .si { color: #a5d6ff !important; }
+.dark .highlight .sx { color: #a5d6ff !important; }
+.dark .highlight .sr { color: #7ee787 !important; }
+.dark .highlight .ss { color: #a5d6ff !important; }
+.dark .highlight .m { color: #79c0ff !important; }
+.dark .highlight .mi { color: #79c0ff !important; }
+.dark .highlight .mf { color: #79c0ff !important; }
+.dark .highlight .mh { color: #79c0ff !important; }
+.dark .highlight .mo { color: #79c0ff !important; }
+.dark .highlight .mb { color: #79c0ff !important; }
+.dark .highlight .nt { color: #7ee787 !important; }
+.dark .highlight .na { color: #79c0ff !important; }
+.dark .highlight .nb { color: #ffa657 !important; }
+.dark .highlight .bp { color: #ffa657 !important; }
+.dark .highlight .nv { color: #ffa657 !important; }
+.dark .highlight .vi { color: #ffa657 !important; }
+.dark .highlight .vg { color: #ffa657 !important; }
+.dark .highlight .vc { color: #79c0ff !important; }
+
+/* Custom scrollbar for code blocks */
+.syntax-highlighted::-webkit-scrollbar {
+  @apply h-2;
+}
+
+.syntax-highlighted::-webkit-scrollbar-track {
+  @apply bg-gray-200 rounded;
+}
+
+.dark .syntax-highlighted::-webkit-scrollbar-track {
+  @apply bg-gray-800;
+}
+
+.syntax-highlighted::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded;
+}
+
+.dark .syntax-highlighted::-webkit-scrollbar-thumb {
+  @apply bg-gray-600;
+}
+
+/* Tag colors with dark mode support */
+.tag-color {
+  @apply px-2 py-1 rounded-full text-xs font-medium;
+}
+
+/* IDE-Style Code Editor */
+.ide-editor {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace !important;
+  background-color: #1e1e1e !important;
+  color: #d4d4d4 !important;
+  line-height: 1.5 !important;
+  tab-size: 2 !important;
+  border: none !important;
+  outline: none !important;
+  resize: none !important;
+}
+
+.ide-editor:focus {
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+}
+
+/* IDE Editor Selection */
+.ide-editor::selection {
+  background-color: #264f78 !important;
+}
+
+/* IDE Editor Scrollbar */
+.ide-editor::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.ide-editor::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+.ide-editor::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 6px;
+}
+
+.ide-editor::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4f;
+}
+
+/* Line numbers simulation (optional) */
+.ide-editor[data-lines]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  background: #252526;
+  border-right: 1px solid #3e3e42;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Bracket matching highlight */
+.bracket-match {
+  background-color: rgba(0, 122, 204, 0.3) !important;
+  border: 1px solid #007acc;
+}
+
+/* CodeMirror Real IDE Container */
+.codemirror-container {
+  min-height: 400px;
+  background: #1e1e1e;
+}
+
+.codemirror-container .cm-editor {
+  border: none !important;
+  outline: none !important;
+}
+
+.codemirror-container .cm-scroller {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace !important;
+}

@@ -2,11 +2,11 @@
   <!-- Header -->
   <div class="flex items-start justify-between mb-8">
     <div class="flex-1 min-w-0">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2" data-code-share-title-target="title">
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2" data-code-share-target="title">
         <%= @snippet.title %>
       </h1>
       <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
-        <span class="inline-flex items-center px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-medium" data-code-share-language-target="language">
+        <span class="inline-flex items-center px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-medium" data-code-share-target="language">
           <%= @snippet.language %>
         </span>
         <span class="inline-flex items-center px-2 py-1 rounded font-medium <%= @snippet.public? ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400' %>">
@@ -152,8 +152,9 @@
       </button>
     </div>
     
-    <div class="syntax-highlighted" data-code-share-code-block-target="codeBlock" data-code="<%= @snippet.code %>">
-      <%== syntax_highlight(@snippet.code, @snippet.language) %>
+    <div class="syntax-highlighted" data-code-share-target="codeBlock" data-code="<%= @snippet.code %>" data-controller="code-editor" data-code-editor-mode-value="<%= @snippet.language %>" data-code-editor-readonly-value="true" data-code-editor-code-value="<%= @snippet.code.gsub('"', '&quot;') %>">
+      <!-- CodeMirror will replace this content -->
+      <pre class="text-sm text-gray-700 dark:text-gray-300"><%= @snippet.code %></pre>
     </div>
   </div>
 

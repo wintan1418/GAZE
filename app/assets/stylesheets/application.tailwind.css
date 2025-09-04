@@ -188,3 +188,65 @@
 .tag-color {
   @apply px-2 py-1 rounded-full text-xs font-medium;
 }
+
+/* IDE-Style Code Editor */
+.ide-editor {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace !important;
+  background-color: #1e1e1e !important;
+  color: #d4d4d4 !important;
+  line-height: 1.5 !important;
+  tab-size: 2 !important;
+  border: none !important;
+  outline: none !important;
+  resize: none !important;
+}
+
+.ide-editor:focus {
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+}
+
+/* IDE Editor Selection */
+.ide-editor::selection {
+  background-color: #264f78 !important;
+}
+
+/* IDE Editor Scrollbar */
+.ide-editor::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.ide-editor::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+.ide-editor::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 6px;
+}
+
+.ide-editor::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4f;
+}
+
+/* Line numbers simulation (optional) */
+.ide-editor[data-lines]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  background: #252526;
+  border-right: 1px solid #3e3e42;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Bracket matching highlight */
+.bracket-match {
+  background-color: rgba(0, 122, 204, 0.3) !important;
+  border: 1px solid #007acc;
+}

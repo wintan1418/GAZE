@@ -1,0 +1,141 @@
+<div class="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 text-white">
+    <div class="container mx-auto px-4 py-16">
+      <div class="text-center max-w-4xl mx-auto">
+        <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-pink-100 bg-clip-text text-transparent">
+          Snippet Stacks
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 text-pink-100">
+          Discover curated collections of code snippets from the community
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mx-auto px-4 py-8">
+    <% if @stacks.any? %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <% @stacks.each do |stack| %>
+          <%= link_to public_stack_path(stack), class: "group block" do %>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl 
+                        border border-gray-200 dark:border-gray-700 overflow-hidden 
+                        transform transition-all duration-300 hover:-translate-y-1">
+              <!-- Stack Header -->
+              <div class="p-6">
+                <div class="flex items-start justify-between mb-4">
+                  <div class="w-14 h-14 rounded-xl shadow-lg flex items-center justify-center"
+                       style="background-color: <%= stack.color %>">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                  </div>
+                  
+                  <div class="flex items-center gap-2">
+                    <img src="https://ui-avatars.com/api/?name=<%= stack.user.username %>&size=32" 
+                         alt="<%= stack.user.username %>" 
+                         class="w-8 h-8 rounded-full">
+                  </div>
+                </div>
+                
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 
+                           group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                  <%= stack.name %>
+                </h3>
+                
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  by <%= stack.user.username %>
+                </p>
+                
+                <% if stack.description.present? %>
+                  <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-4">
+                    <%= stack.description %>
+                  </p>
+                <% end %>
+                
+                <!-- Stack Stats -->
+                <div class="flex items-center justify-between text-sm">
+                  <div class="flex items-center gap-3 text-gray-500 dark:text-gray-400">
+                    <div class="flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                      </svg>
+                      <span><%= stack.snippets.count %></span>
+                    </div>
+                  </div>
+                  
+                  <div class="text-gray-400 dark:text-gray-500 text-xs">
+                    <%= time_ago_in_words(stack.created_at) %> ago
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Preview Snippets -->
+              <div class="px-6 pb-6">
+                <div class="flex -space-x-2">
+                  <% stack.snippets.limit(4).each do |snippet| %>
+                    <div class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 border-2 border-white dark:border-gray-800 
+                                flex items-center justify-center text-xs font-mono text-gray-600 dark:text-gray-400">
+                      <%= snippet.language[0..1].upcase %>
+                    </div>
+                  <% end %>
+                  <% if stack.snippets.count > 4 %>
+                    <div class="w-10 h-10 rounded-lg bg-gray-200 dark:bg-gray-600 border-2 border-white dark:border-gray-800 
+                                flex items-center justify-center text-xs font-medium text-gray-600 dark:text-gray-300">
+                      +<%= stack.snippets.count - 4 %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+              
+              <!-- Hover Effect Border -->
+              <div class="absolute inset-0 rounded-2xl ring-2 ring-purple-500 ring-opacity-0 
+                          group-hover:ring-opacity-100 transition-all duration-300 pointer-events-none"></div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      
+      <!-- Pagination -->
+      <% if respond_to?(:pagy_nav) %>
+        <div class="mt-12">
+          <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+        </div>
+      <% end %>
+    <% else %>
+      <!-- Empty State -->
+      <div class="max-w-2xl mx-auto text-center py-16">
+        <div class="w-24 h-24 mx-auto bg-gradient-to-br from-gray-100 to-gray-200 
+                    dark:from-gray-700 dark:to-gray-800 rounded-full 
+                    flex items-center justify-center mb-8">
+          <svg class="w-12 h-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+        </div>
+        
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          No public stacks yet
+        </h2>
+        
+        <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+          Be the first to create and share a public stack!
+        </p>
+        
+        <% if user_signed_in? %>
+          <%= link_to "Create a Stack", new_stack_path, 
+              class: "inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 
+                     text-white font-medium rounded-xl shadow-lg hover:shadow-xl 
+                     transform hover:-translate-y-0.5 transition-all duration-200" %>
+        <% else %>
+          <%= link_to "Sign up to create stacks", new_user_registration_path, 
+              class: "inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 
+                     text-white font-medium rounded-xl shadow-lg hover:shadow-xl 
+                     transform hover:-translate-y-0.5 transition-all duration-200" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

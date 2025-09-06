@@ -1,0 +1,159 @@
+<div class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+  <div class="container mx-auto px-4 py-8 max-w-2xl">
+    <!-- Header -->
+    <div class="mb-8">
+      <%= link_to stacks_path, 
+          class: "inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 
+                 hover:text-gray-900 dark:hover:text-white transition-colors mb-4" do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Stacks
+      <% end %>
+      
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Create New Stack</h1>
+      <p class="text-gray-600 dark:text-gray-400">Organize your snippets into a themed collection</p>
+    </div>
+
+    <!-- Form -->
+    <%= form_with model: @stack, local: true, 
+        class: "bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8" do |f| %>
+      
+      <% if @stack.errors.any? %>
+        <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div class="flex-1">
+              <h3 class="font-medium text-red-900 dark:text-red-200 mb-1">Please fix the following errors:</h3>
+              <ul class="list-disc list-inside text-sm text-red-700 dark:text-red-400 space-y-1">
+                <% @stack.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Stack Name -->
+      <div class="mb-6">
+        <%= f.label :name, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+        <%= f.text_field :name, 
+            placeholder: "e.g., React Hooks, API Utilities, Algorithm Collection",
+            class: "w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 
+                   rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                   transition-all duration-200" %>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-6">
+        <%= f.label :description, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+        <%= f.text_area :description, 
+            rows: 3,
+            placeholder: "Describe what kind of snippets this stack will contain...",
+            class: "w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 
+                   rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                   transition-all duration-200 resize-none" %>
+      </div>
+
+      <!-- Color Picker -->
+      <div class="mb-6">
+        <%= f.label :color, "Stack Color", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <%= f.color_field :color, 
+                value: @stack.color || "#3B82F6",
+                class: "w-20 h-12 rounded-lg cursor-pointer border-2 border-gray-300 dark:border-gray-600" %>
+          </div>
+          <div class="flex gap-2">
+            <% %w[#3B82F6 #10B981 #F59E0B #EF4444 #8B5CF6 #EC4899 #14B8A6].each do |color| %>
+              <button type="button" 
+                      onclick="document.getElementById('stack_color').value = '<%= color %>'"
+                      class="w-8 h-8 rounded-lg shadow-md hover:shadow-lg transform hover:scale-110 
+                             transition-all duration-200 ring-2 ring-offset-2 ring-transparent 
+                             hover:ring-gray-400 dark:ring-offset-gray-800"
+                      style="background-color: <%= color %>">
+              </button>
+            <% end %>
+          </div>
+        </div>
+        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+          Choose a color to help identify your stack
+        </p>
+      </div>
+
+      <!-- Visibility -->
+      <div class="mb-8">
+        <%= f.label :visibility, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3" %>
+        <div class="grid grid-cols-2 gap-4">
+          <label class="relative cursor-pointer">
+            <%= f.radio_button :visibility, 'private_stack', 
+                checked: true,
+                class: "sr-only peer" %>
+            <div class="p-4 rounded-xl border-2 border-gray-300 dark:border-gray-600 
+                        peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20
+                        hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-200">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 
+                            peer-checked:bg-blue-100 dark:peer-checked:bg-blue-800 
+                            flex items-center justify-center transition-colors">
+                  <svg class="w-5 h-5 text-gray-500 peer-checked:text-blue-600 dark:peer-checked:text-blue-400" 
+                       fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-900 dark:text-white">Private</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">Only you can see this stack</p>
+                </div>
+              </div>
+            </div>
+          </label>
+
+          <label class="relative cursor-pointer">
+            <%= f.radio_button :visibility, 'public_stack', 
+                class: "sr-only peer" %>
+            <div class="p-4 rounded-xl border-2 border-gray-300 dark:border-gray-600 
+                        peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20
+                        hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-200">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 
+                            peer-checked:bg-blue-100 dark:peer-checked:bg-blue-800 
+                            flex items-center justify-center transition-colors">
+                  <svg class="w-5 h-5 text-gray-500 peer-checked:text-blue-600 dark:peer-checked:text-blue-400" 
+                       fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-900 dark:text-white">Public</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">Anyone can view this stack</p>
+                </div>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center justify-end gap-4">
+        <%= link_to "Cancel", stacks_path, 
+            class: "px-6 py-3 text-gray-700 dark:text-gray-300 font-medium 
+                   hover:text-gray-900 dark:hover:text-white transition-colors" %>
+        
+        <%= f.submit "Create Stack", 
+            class: "px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white 
+                   font-medium rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 
+                   transition-all duration-200 cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+</div>

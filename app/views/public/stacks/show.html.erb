@@ -1,0 +1,177 @@
+<div class="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
+  <!-- Header -->
+  <div class="bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 text-white">
+    <div class="container mx-auto px-4 py-12">
+      <%= link_to public_stacks_path, 
+          class: "inline-flex items-center gap-2 text-pink-100 hover:text-white transition-colors mb-6" do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Stacks
+      <% end %>
+      
+      <div class="flex items-start gap-6">
+        <!-- Stack Icon -->
+        <div class="w-20 h-20 rounded-2xl shadow-xl flex items-center justify-center flex-shrink-0"
+             style="background-color: <%= @stack.color %>">
+          <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+        </div>
+        
+        <div class="flex-1">
+          <h1 class="text-4xl font-bold mb-2"><%= @stack.name %></h1>
+          
+          <% if @stack.description.present? %>
+            <p class="text-lg text-pink-100 mb-4"><%= @stack.description %></p>
+          <% end %>
+          
+          <div class="flex items-center gap-6 text-sm">
+            <div class="flex items-center gap-2">
+              <img src="https://ui-avatars.com/api/?name=<%= @stack.user.username %>&size=24" 
+                   alt="<%= @stack.user.username %>" 
+                   class="w-6 h-6 rounded-full">
+              <span class="text-pink-100">by <%= @stack.user.username %></span>
+            </div>
+            
+            <div class="flex items-center gap-2 text-pink-200">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+              <span><%= pluralize(@stack.snippets.count, 'snippet') %></span>
+            </div>
+            
+            <div class="flex items-center gap-2 text-pink-200">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Created <%= time_ago_in_words(@stack.created_at) %> ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="container mx-auto px-4 py-8">
+    <% if @snippets.any? %>
+      <div class="space-y-6">
+        <% @snippets.each do |snippet| %>
+          <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-all duration-200">
+            <!-- Snippet Header -->
+            <div class="p-6 pb-4">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                      <%= snippet.user.username[0].upcase %>
+                    </div>
+                    <div>
+                      <p class="font-semibold text-gray-900 dark:text-white">
+                        <%= snippet.user.username %>
+                      </p>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">
+                        <%= time_ago_in_words(snippet.created_at) %> ago
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                    <%= link_to snippet.title, public_snippet_path(snippet), 
+                        class: "hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-200" %>
+                  </h3>
+                  
+                  <% if snippet.description.present? %>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                      <%= truncate(snippet.description, length: 150) %>
+                    </p>
+                  <% end %>
+                </div>
+                
+                <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+                  <span class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    <%= snippet.view_count %>
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <%= snippet.copy_count %>
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Code Preview -->
+            <div class="px-6 pb-4">
+              <div class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                  <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-sm font-medium rounded-full">
+                    <%= snippet.language %>
+                  </span>
+                </div>
+                
+                <%= syntax_highlighted_code(snippet.code, snippet.language, truncate: 300) %>
+              </div>
+            </div>
+            
+            <!-- Tags and Actions -->
+            <div class="px-6 pb-6">
+              <div class="flex items-center justify-between">
+                <div class="flex flex-wrap gap-2">
+                  <% snippet.tags.limit(4).each do |tag| %>
+                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-lg">
+                      #<%= tag.name %>
+                    </span>
+                  <% end %>
+                </div>
+                
+                <%= link_to public_snippet_path(snippet), 
+                    class: "text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium transition-colors duration-200" do %>
+                  View Code →
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      
+      <!-- Pagination -->
+      <% if respond_to?(:pagy_nav) %>
+        <div class="mt-12">
+          <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+        </div>
+      <% end %>
+    <% else %>
+      <!-- Empty State -->
+      <div class="text-center py-16">
+        <div class="w-24 h-24 mx-auto bg-gradient-to-br from-gray-100 to-gray-200 
+                    dark:from-gray-700 dark:to-gray-800 rounded-full 
+                    flex items-center justify-center mb-6">
+          <svg class="w-12 h-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+          </svg>
+        </div>
+        
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+          No snippets in this stack yet
+        </h3>
+        
+        <p class="text-gray-600 dark:text-gray-400">
+          The owner hasn't added any snippets to this stack.
+        </p>
+      </div>
+    <% end %>
+  </div>
+</div>

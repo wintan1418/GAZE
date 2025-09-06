@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: gaze
+    runtime: ruby
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    env: ruby
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: gaze-postgresql
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: WEB_CONCURRENCY
+        value: 2
+      - key: RAILS_ENV
+        value: production
+      - key: BUNDLE_WITHOUT
+        value: development:test
+      - key: RAILS_LOG_TO_STDOUT
+        value: enabled
+      - key: RAILS_SERVE_STATIC_FILES
+        value: enabled
+
+databases:
+  - name: gaze-postgresql
+    databaseName: gaze
+    user: gaze
+    plan: free

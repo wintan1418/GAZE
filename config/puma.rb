@@ -32,3 +32,17 @@ plugin :tmp_restart
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
+
+# Production environment configuration for Render
+if ENV["RAILS_ENV"] == "production"
+  # Preload application for better memory usage
+  preload_app!
+  
+  # Set the worker count for production
+  workers ENV.fetch("WEB_CONCURRENCY", 2)
+
+  on_worker_boot do
+    # Valid on Rails 4.1+ using the `config/database.yml` method of setting `pool` size
+    ActiveRecord::Base.establish_connection
+  end
+end

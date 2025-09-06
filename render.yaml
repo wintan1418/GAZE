@@ -12,7 +12,9 @@ services:
           name: gaze-postgresql
           property: connectionString
       - key: RAILS_MASTER_KEY
-        sync: false
+        generateValue: true
+      - key: SECRET_KEY_BASE
+        generateValue: true
       - key: WEB_CONCURRENCY
         value: 2
       - key: RAILS_ENV

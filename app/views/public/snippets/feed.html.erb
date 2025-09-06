@@ -1,0 +1,392 @@
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-950 dark:via-blue-950 dark:to-indigo-950">
+  <!-- Hero Section -->
+  <div class="relative bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 bg-grid-pattern opacity-10"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+    
+    <!-- Floating Elements -->
+    <div class="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+    
+    <div class="relative container mx-auto px-4 py-24">
+      <div class="text-center max-w-5xl mx-auto">
+        <div class="mb-8">
+          <h1 class="text-6xl md:text-8xl font-black mb-6 bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent drop-shadow-2xl">
+            Code Feed
+          </h1>
+          <% if params[:q].present? %>
+            <div class="glass rounded-2xl p-6 mb-6 backdrop-blur-xl">
+              <p class="text-2xl md:text-3xl mb-2 text-white font-bold">
+                Search Results
+              </p>
+              <p class="text-lg text-blue-100 mb-2">
+                Query: "<%= params[:q] %>"
+              </p>
+              <p class="text-blue-200">
+                Found <%= @pagy.count %> matching snippets
+              </p>
+            </div>
+          <% else %>
+            <p class="text-2xl md:text-3xl mb-8 text-white/90 font-light leading-relaxed">
+              Discover, share, and explore 
+              <span class="font-bold bg-gradient-to-r from-yellow-300 to-pink-300 bg-clip-text text-transparent">
+                amazing code snippets
+              </span>
+              <br>from developers around the world
+            </p>
+            
+            <!-- Stats -->
+            <div class="flex justify-center gap-8 mb-12">
+              <div class="glass rounded-2xl px-6 py-4 text-center backdrop-blur-xl">
+                <div class="text-3xl font-bold text-white"><%= Snippet.where(visibility: 1).count %></div>
+                <div class="text-blue-100 text-sm uppercase tracking-wide">Public Snippets</div>
+              </div>
+              <div class="glass rounded-2xl px-6 py-4 text-center backdrop-blur-xl">
+                <div class="text-3xl font-bold text-white"><%= User.count %></div>
+                <div class="text-blue-100 text-sm uppercase tracking-wide">Developers</div>
+              </div>
+              <div class="glass rounded-2xl px-6 py-4 text-center backdrop-blur-xl">
+                <div class="text-3xl font-bold text-white"><%= Tag.count %></div>
+                <div class="text-blue-100 text-sm uppercase tracking-wide">Technologies</div>
+              </div>
+            </div>
+          <% end %>
+        
+        <!-- Enhanced Search Bar -->
+        <div data-controller="live-search" 
+             data-live-search-url-value="<%= search_public_snippets_path %>"
+             class="max-w-3xl mx-auto relative">
+          <%= form_with url: search_public_snippets_path, method: :get, local: true, 
+              class: "relative group" do |f| %>
+            <div class="relative">
+              <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
+              <div class="relative">
+                <%= f.text_field :q, 
+                    placeholder: "Search snippets, tags, languages, or paste code...", 
+                    value: params[:q],
+                    data: { 
+                      "live-search-target": "input",
+                      action: "input->live-search#search keydown->live-search#search"
+                    },
+                    class: "w-full py-6 px-8 text-lg text-gray-900 bg-white/95 backdrop-blur-lg
+                           rounded-2xl shadow-2xl focus:outline-none focus:ring-4 
+                           focus:ring-white/50 transition-all duration-300 
+                           placeholder-gray-500 border border-white/20" %>
+                <button type="submit" 
+                        class="absolute right-3 top-1/2 -translate-y-1/2 bg-gradient-to-r 
+                               from-blue-600 via-purple-600 to-pink-600 text-white px-8 py-3 rounded-xl 
+                               hover:shadow-xl hover:scale-105 transition-all duration-200 
+                               font-medium flex items-center gap-2">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  <span class="hidden sm:block">Search</span>
+                </button>
+              </div>
+            </div>
+          <% end %>
+          
+          <!-- Live search results with better styling -->
+          <div data-live-search-target="results" class="hidden absolute top-full left-0 right-0 mt-4 z-50">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-4 py-12">
+    <div class="flex flex-col xl:flex-row gap-12 max-w-7xl mx-auto">
+      <!-- Enhanced Sidebar - Moved First for Better Order -->
+      <div class="xl:w-80 xl:order-2 order-1">
+        <div class="space-y-6 sticky top-24">
+          <!-- Browse Public Stacks -->
+          <div class="glass rounded-3xl shadow-2xl border border-white/20 p-6 backdrop-blur-xl">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+              <div class="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl mr-3">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+              </div>
+              Snippet Stacks
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              Explore curated collections of code snippets
+            </p>
+            <%= link_to public_stacks_path, 
+                class: "block w-full text-center bg-gradient-to-r from-purple-600 to-pink-600 
+                       text-white font-medium py-3 px-4 rounded-2xl hover:shadow-lg 
+                       transform hover:-translate-y-0.5 transition-all duration-200" do %>
+              Browse Stacks →
+            <% end %>
+          </div>
+          
+          <!-- Popular Tags -->
+          <div class="glass rounded-3xl shadow-2xl border border-white/20 p-6 backdrop-blur-xl">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+              <div class="p-2 bg-gradient-to-r from-blue-500 to-teal-500 rounded-xl mr-3">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M7 7h.01M7 3h5c1.1 0 2 .9 2 2v1M7 7v9c0 1.1.9 2 2 2h7c1.1 0 2-.9 2-2V7M7 7H5c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h2" />
+                </svg>
+              </div>
+              Popular Tags
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              <% @popular_tags.each do |tag| %>
+                <span class="px-3 py-2 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 
+                           text-gray-700 dark:text-gray-300 text-sm rounded-2xl hover:from-blue-100 hover:to-purple-100 
+                           dark:hover:from-blue-800 dark:hover:to-purple-800 hover:scale-105
+                           transition-all duration-200 cursor-pointer font-medium">
+                  #<%= tag.name %>
+                </span>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Join GAZE CTA -->
+          <% unless user_signed_in? %>
+            <div class="bg-gradient-to-br from-blue-600 to-purple-600 rounded-3xl p-6 text-white shadow-2xl">
+              <h3 class="text-lg font-bold mb-3 flex items-center">
+                <div class="w-8 h-8 bg-white/20 rounded-lg mr-3 flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                  </svg>
+                </div>
+                Join GAZE
+              </h3>
+              <p class="text-blue-100 mb-4 text-sm leading-relaxed">
+                Create your account to save, organize, and share your own code snippets with the community.
+              </p>
+              <div class="space-y-3">
+                <%= link_to "Get Started", new_user_registration_path, 
+                    class: "block w-full bg-white text-blue-600 font-semibold py-3 px-4 
+                           rounded-2xl text-center hover:bg-blue-50 transition-all duration-200 transform hover:scale-105" %>
+                <%= link_to "Sign In", new_user_session_path, 
+                    class: "block w-full bg-transparent text-white font-semibold py-3 px-4 
+                           rounded-2xl text-center border-2 border-white/30 hover:bg-white/10 
+                           transition-all duration-200" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Main Feed -->
+      <div class="xl:flex-1 xl:order-1 order-2">
+        <!-- Enhanced Sorting Options -->
+        <div class="glass rounded-3xl shadow-2xl p-8 mb-12 backdrop-blur-xl border border-white/20">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            <div class="flex items-center gap-3">
+              <div class="p-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl shadow-lg">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white">Sort & Filter</h3>
+            </div>
+            
+            <div class="flex flex-wrap gap-3">
+              <% sort_url = params[:q].present? ? search_public_snippets_path(q: params[:q], sort_by: 'recent') : feed_path(sort_by: 'recent') %>
+              <%= link_to sort_url, 
+                  class: "group relative overflow-hidden px-6 py-3 rounded-2xl transition-all duration-300 transform hover:scale-105
+                         #{@sort_by == 'recent' ? 
+                           'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-2xl' : 
+                           'bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-700 shadow-lg hover:shadow-xl'}" do %>
+                <div class="flex items-center gap-2 relative z-10">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span class="font-medium">Recent</span>
+                </div>
+                <% unless @sort_by == 'recent' %>
+                  <div class="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <% end %>
+              <% end %>
+            
+            <% sort_url = params[:q].present? ? search_public_snippets_path(q: params[:q], sort_by: 'most_viewed') : feed_path(sort_by: 'most_viewed') %>
+            <%= link_to sort_url, 
+                class: "px-4 py-2 rounded-xl transition-all duration-200 
+                       #{@sort_by == 'most_viewed' ? 
+                         'bg-blue-600 text-white shadow-md' : 
+                         'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}" do %>
+              <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              Most Viewed
+            <% end %>
+            
+            <% sort_url = params[:q].present? ? search_public_snippets_path(q: params[:q], sort_by: 'most_copied') : feed_path(sort_by: 'most_copied') %>
+            <%= link_to sort_url, 
+                class: "px-4 py-2 rounded-xl transition-all duration-200 
+                       #{@sort_by == 'most_copied' ? 
+                         'bg-blue-600 text-white shadow-md' : 
+                         'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}" do %>
+              <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              Most Copied
+            <% end %>
+            
+            <% sort_url = params[:q].present? ? search_public_snippets_path(q: params[:q], sort_by: 'most_starred') : feed_path(sort_by: 'most_starred') %>
+            <%= link_to sort_url, 
+                class: "px-4 py-2 rounded-xl transition-all duration-200 
+                       #{@sort_by == 'most_starred' ? 
+                         'bg-blue-600 text-white shadow-md' : 
+                         'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}" do %>
+              <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+              </svg>
+              Most Starred
+            <% end %>
+            
+            <% sort_url = params[:q].present? ? search_public_snippets_path(q: params[:q], sort_by: 'trending') : feed_path(sort_by: 'trending') %>
+            <%= link_to sort_url, 
+                class: "px-4 py-2 rounded-xl transition-all duration-200 
+                       #{@sort_by == 'trending' ? 
+                         'bg-blue-600 text-white shadow-md' : 
+                         'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}" do %>
+              <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+              Trending
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Premium Snippets Grid -->
+        <div class="space-y-8">
+          <% @snippets.each do |snippet| %>
+            <div class="group relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/50 overflow-hidden hover:shadow-3xl hover:scale-[1.02] transition-all duration-500 animate-fade-in-up">
+              <!-- Enhanced Header with Gradient Background -->
+              <div class="relative p-8 pb-6">
+                <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-t-3xl"></div>
+                <div class="relative">
+                  <div class="flex items-start justify-between">
+                    <div class="flex-1">
+                      <div class="flex items-center gap-4 mb-4">
+                        <div class="relative">
+                          <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-xl">
+                            <%= snippet.user.username[0].upcase %>
+                          </div>
+                          <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800"></div>
+                        </div>
+                        <div>
+                          <p class="text-lg font-bold text-gray-900 dark:text-white">
+                            <%= snippet.user.username %>
+                          </p>
+                          <p class="text-sm text-gray-600 dark:text-gray-400">
+                            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <%= time_ago_in_words(snippet.created_at) %> ago
+                          </p>
+                        </div>
+                      </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                      <%= link_to snippet.title, public_snippet_path(snippet), 
+                          class: "hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200" %>
+                    </h3>
+                    
+                    <% if snippet.description.present? %>
+                      <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                        <%= truncate(snippet.description, length: 150) %>
+                      </p>
+                    <% end %>
+                  </div>
+                  
+                  <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+                    <span class="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                      <%= snippet.view_count %>
+                    </span>
+                    <span class="flex items-center gap-1 hover:text-green-600 dark:hover:text-green-400 transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                      <%= snippet.copy_count %>
+                    </span>
+                    <span class="flex items-center gap-1 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                      </svg>
+                      <%= snippet.comments.count %>
+                    </span>
+                    <span class="flex items-center gap-1 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                      </svg>
+                      <%= snippet.stars.count %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Code Preview -->
+              <div class="px-6 pb-4">
+                <div class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                  <div class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                    <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-medium rounded-full">
+                      <%= snippet.language %>
+                    </span>
+                  </div>
+                  
+                  <%= syntax_highlighted_code(snippet.code, snippet.language, truncate: 300) %>
+                </div>
+              </div>
+
+              <!-- Tags and Actions -->
+              <div class="px-6 pb-6">
+                <div class="flex items-center justify-between">
+                  <div class="flex flex-wrap gap-2">
+                    <% snippet.tags.limit(4).each do |tag| %>
+                      <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-lg">
+                        #<%= tag.name %>
+                      </span>
+                    <% end %>
+                    <% if snippet.tags.count > 4 %>
+                      <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-xs rounded-lg">
+                        +<%= snippet.tags.count - 4 %> more
+                      </span>
+                    <% end %>
+                  </div>
+                  
+                  <div class="flex items-center gap-3">
+                    <%= link_to public_snippet_path(snippet), 
+                        class: "text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors duration-200" do %>
+                      View Code →
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Pagination -->
+        <% if respond_to?(:pagy_nav) %>
+          <div class="mt-8">
+            <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+          </div>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>

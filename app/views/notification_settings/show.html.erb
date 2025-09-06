@@ -1,0 +1,255 @@
+<div class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+  <div class="container mx-auto px-4 py-8 max-w-4xl">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="p-3 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl shadow-lg">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M15 17h5l-5-5-5 5h5v-13a1 1 0 011-1h4a1 1 0 011 1v13z M5 17v2a2 2 0 002 2h10a2 2 0 002-2v-2" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Notification Settings</h1>
+          <p class="text-gray-600 dark:text-gray-400">Manage how you receive notifications about your snippets</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Form -->
+    <%= form_with model: @notification_setting, url: notification_settings_path, local: true,
+        class: "space-y-8" do |f| %>
+      
+      <% if @notification_setting.errors.any? %>
+        <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-6">
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div class="flex-1">
+              <h3 class="font-medium text-red-900 dark:text-red-200 mb-1">Please fix the following errors:</h3>
+              <ul class="list-disc list-inside text-sm text-red-700 dark:text-red-400 space-y-1">
+                <% @notification_setting.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Email Notifications -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center gap-3">
+            <div class="p-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm">
+              <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Email Notifications</h2>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Receive notifications in your email inbox</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="p-6 space-y-6">
+          <!-- Comments -->
+          <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </div>
+              <div>
+                <p class="font-medium text-gray-900 dark:text-white">New Comments</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">When someone comments on your snippets</p>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <%= f.check_box :email_comments, class: "sr-only peer" %>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+
+          <!-- Stars -->
+          <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
+                <svg class="w-4 h-4 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+              </div>
+              <div>
+                <p class="font-medium text-gray-900 dark:text-white">New Stars</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">When someone stars your snippets</p>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <%= f.check_box :email_stars, class: "sr-only peer" %>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+
+          <!-- Views -->
+          <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+              <div>
+                <p class="font-medium text-gray-900 dark:text-white">Snippet Views</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">When someone views your snippets (may be frequent)</p>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <%= f.check_box :email_views, class: "sr-only peer" %>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+
+          <!-- Copies -->
+          <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
+                <svg class="w-4 h-4 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <p class="font-medium text-gray-900 dark:text-white">Code Copies</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">When someone copies your snippet code</p>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <%= f.check_box :email_copies, class: "sr-only peer" %>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Push Notifications -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center gap-3">
+            <div class="p-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm">
+              <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M15 17h5l-5-5-5 5h5v-13a1 1 0 011-1h4a1 1 0 011 1v13z" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-lg font-semibold text-gray-900 dark:text-white">In-App Notifications</h2>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Receive notifications when you're using GAZE</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="p-6 space-y-6">
+          <!-- Comments -->
+          <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </div>
+              <div>
+                <p class="font-medium text-gray-900 dark:text-white">New Comments</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">When someone comments on your snippets</p>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <%= f.check_box :push_comments, class: "sr-only peer" %>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+            </label>
+          </div>
+
+          <!-- Stars -->
+          <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
+                <svg class="w-4 h-4 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+              </div>
+              <div>
+                <p class="font-medium text-gray-900 dark:text-white">New Stars</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">When someone stars your snippets</p>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <%= f.check_box :push_stars, class: "sr-only peer" %>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+            </label>
+          </div>
+
+          <!-- Views -->
+          <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+              <div>
+                <p class="font-medium text-gray-900 dark:text-white">Snippet Views</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">When someone views your snippets (may be frequent)</p>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <%= f.check_box :push_views, class: "sr-only peer" %>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+            </label>
+          </div>
+
+          <!-- Copies -->
+          <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
+                <svg class="w-4 h-4 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <p class="font-medium text-gray-900 dark:text-white">Code Copies</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">When someone copies your snippet code</p>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <%= f.check_box :push_copies, class: "sr-only peer" %>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center justify-end gap-4">
+        <%= link_to "Cancel", user_profile_path, 
+            class: "px-6 py-3 text-gray-700 dark:text-gray-300 font-medium 
+                   hover:text-gray-900 dark:hover:text-white transition-colors" %>
+        
+        <%= f.submit "Save Settings", 
+            class: "px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white 
+                   font-medium rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 
+                   transition-all duration-200 cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+</div>

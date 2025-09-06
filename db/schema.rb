@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_03_001018) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_06_091040) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -37,6 +37,63 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_03_001018) do
     t.index ["visibility"], name: "index_collections_on_visibility"
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.text "content", null: false
+    t.bigint "snippet_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["snippet_id", "created_at"], name: "index_comments_on_snippet_id_and_created_at"
+    t.index ["snippet_id"], name: "index_comments_on_snippet_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "edit_requests", force: :cascade do |t|
+    t.bigint "snippet_id", null: false
+    t.bigint "requester_id", null: false
+    t.bigint "approver_id"
+    t.string "status", default: "pending", null: false
+    t.text "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["approver_id"], name: "index_edit_requests_on_approver_id"
+    t.index ["requester_id"], name: "index_edit_requests_on_requester_id"
+    t.index ["snippet_id", "requester_id"], name: "index_edit_requests_on_snippet_id_and_requester_id", unique: true
+    t.index ["snippet_id"], name: "index_edit_requests_on_snippet_id"
+    t.index ["status"], name: "index_edit_requests_on_status"
+  end
+
+  create_table "notification_settings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.boolean "email_comments"
+    t.boolean "email_stars"
+    t.boolean "email_views"
+    t.boolean "email_copies"
+    t.boolean "push_comments"
+    t.boolean "push_stars"
+    t.boolean "push_views"
+    t.boolean "push_copies"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_notification_settings_on_user_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "actor_type", null: false
+    t.bigint "actor_id", null: false
+    t.string "notifiable_type", null: false
+    t.bigint "notifiable_id", null: false
+    t.string "action"
+    t.datetime "read_at"
+    t.json "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["actor_type", "actor_id"], name: "index_notifications_on_actor"
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
   create_table "snippet_tags", force: :cascade do |t|
     t.bigint "snippet_id", null: false
     t.bigint "tag_id", null: false
@@ -57,11 +114,48 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_03_001018) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "view_count", default: 0, null: false
+    t.integer "copy_count", default: 0, null: false
+    t.index ["copy_count"], name: "index_snippets_on_copy_count"
     t.index ["created_at"], name: "index_snippets_on_created_at"
     t.index ["language"], name: "index_snippets_on_language"
     t.index ["slug"], name: "index_snippets_on_slug", unique: true
     t.index ["user_id"], name: "index_snippets_on_user_id"
+    t.index ["view_count"], name: "index_snippets_on_view_count"
     t.index ["visibility"], name: "index_snippets_on_visibility"
+  end
+
+  create_table "stack_snippets", force: :cascade do |t|
+    t.bigint "stack_id", null: false
+    t.bigint "snippet_id", null: false
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["snippet_id"], name: "index_stack_snippets_on_snippet_id"
+    t.index ["stack_id"], name: "index_stack_snippets_on_stack_id"
+  end
+
+  create_table "stacks", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.bigint "user_id", null: false
+    t.integer "visibility"
+    t.string "color"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "slug"
+    t.index ["slug"], name: "index_stacks_on_slug", unique: true
+    t.index ["user_id"], name: "index_stacks_on_user_id"
+  end
+
+  create_table "stars", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "snippet_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["snippet_id"], name: "index_stars_on_snippet_id"
+    t.index ["user_id", "snippet_id"], name: "index_stars_on_user_id_and_snippet_id", unique: true
+    t.index ["user_id"], name: "index_stars_on_user_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -96,8 +190,20 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_03_001018) do
   add_foreign_key "collection_snippets", "collections"
   add_foreign_key "collection_snippets", "snippets"
   add_foreign_key "collections", "users"
+  add_foreign_key "comments", "snippets"
+  add_foreign_key "comments", "users"
+  add_foreign_key "edit_requests", "snippets"
+  add_foreign_key "edit_requests", "users", column: "approver_id"
+  add_foreign_key "edit_requests", "users", column: "requester_id"
+  add_foreign_key "notification_settings", "users"
+  add_foreign_key "notifications", "users"
   add_foreign_key "snippet_tags", "snippets"
   add_foreign_key "snippet_tags", "tags"
   add_foreign_key "snippets", "users"
+  add_foreign_key "stack_snippets", "snippets"
+  add_foreign_key "stack_snippets", "stacks"
+  add_foreign_key "stacks", "users"
+  add_foreign_key "stars", "snippets"
+  add_foreign_key "stars", "users"
   add_foreign_key "tags", "users"
 end

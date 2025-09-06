@@ -1,0 +1,90 @@
+<div class="max-w-6xl mx-auto">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">Browse Snippets</h1>
+    <p class="text-gray-600 dark:text-gray-400">
+      Discover and explore public code snippets from the community.
+    </p>
+  </div>
+
+  <!-- Search -->
+  <div class="mb-8">
+    <%= form_with url: public_snippets_search_path, method: :get, local: true, class: "max-w-lg" do |f| %>
+      <div class="relative">
+        <%= f.text_field :q, 
+            placeholder: "Search snippets...", 
+            value: params[:q],
+            class: "w-full py-3 px-4 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 
+                   border border-gray-300 dark:border-gray-600 rounded-lg 
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+        <button type="submit" 
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">
+          Search
+        </button>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Snippets Grid -->
+  <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+    <% @snippets.each do |snippet| %>
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow">
+        <!-- Header -->
+        <div class="p-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+            <%= link_to snippet.title, public_snippet_path(snippet), class: "hover:text-blue-600 dark:hover:text-blue-400" %>
+          </h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+            by <%= snippet.user.username %> • <%= time_ago_in_words(snippet.created_at) %> ago
+          </p>
+          <% if snippet.description.present? %>
+            <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">
+              <%= truncate(snippet.description, length: 100) %>
+            </p>
+          <% end %>
+        </div>
+
+        <!-- Code Preview -->
+        <div class="px-4 pb-4">
+          <%= syntax_highlighted_code(snippet.code, snippet.language, truncate: 150) %>
+        </div>
+
+        <!-- Tags -->
+        <% if snippet.tags.any? %>
+          <div class="px-4 pb-4">
+            <div class="flex flex-wrap gap-1">
+              <% snippet.tags.limit(3).each do |tag| %>
+                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded">
+                  #<%= tag.name %>
+                </span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Footer -->
+        <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700/50 flex justify-between items-center text-sm">
+          <span class="text-gray-500 dark:text-gray-400"><%= snippet.language %></span>
+          <%= link_to "View →", public_snippet_path(snippet), class: "text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Pagination -->
+  <% if respond_to?(:pagy_nav) %>
+    <div class="mt-8">
+      <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+    </div>
+  <% end %>
+
+  <!-- Empty State -->
+  <% if @snippets.empty? %>
+    <div class="text-center py-12">
+      <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+      </svg>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">No snippets found</h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">There are no public snippets to display yet.</p>
+    </div>
+  <% end %>
+</div>

@@ -21,3 +21,9 @@ application.register("code-editor", CodeEditorController)
 
 import CodeShareController from "./code_share_controller"
 application.register("code-share", CodeShareController)
+
+import LiveSearchController from "./live_search_controller"
+application.register("live-search", LiveSearchController)
+
+import NotificationController from "./notification_controller"
+application.register("notification", NotificationController)

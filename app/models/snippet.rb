@@ -5,6 +5,12 @@ class Snippet < ApplicationRecord
   has_many :tags, through: :snippet_tags
   has_many :collection_snippets, dependent: :destroy
   has_many :collections, through: :collection_snippets
+  has_many :comments, dependent: :destroy
+  has_many :edit_requests, dependent: :destroy
+  has_many :stars, dependent: :destroy
+  has_many :starred_by, through: :stars, source: :user
+  has_many :stack_snippets, dependent: :destroy
+  has_many :stacks, through: :stack_snippets
   
   # Enums
   enum visibility: { private_snippet: 0, public_snippet: 1 }
@@ -32,6 +38,10 @@ class Snippet < ApplicationRecord
   scope :private_snippets, -> { where(visibility: :private_snippet) }
   scope :recent, -> { order(created_at: :desc) }
   scope :by_language, ->(language) { where(language: language) }
+  scope :most_viewed, -> { order(view_count: :desc) }
+  scope :most_copied, -> { order(copy_count: :desc) }
+  scope :most_starred, -> { joins(:stars).group('snippets.id').order('COUNT(stars.id) DESC') }
+  scope :trending, -> { where('created_at > ?', 1.week.ago).order(view_count: :desc) }
   
   # Callbacks
   before_validation :set_default_visibility
@@ -43,6 +53,31 @@ class Snippet < ApplicationRecord
   
   def private?
     private_snippet?
+  end
+  
+  def increment_view_count!
+    increment!(:view_count)
+  end
+  
+  def increment_copy_count!
+    increment!(:copy_count)
+  end
+  
+  def can_be_edited_by?(user)
+    return false unless user
+    return true if self.user == user
+    
+    # Check if user has an approved edit request
+    edit_requests.where(requester: user, status: 'approved').exists?
+  end
+  
+  def starred_by?(user)
+    return false unless user
+    stars.where(user: user).exists?
+  end
+  
+  def stars_count
+    stars.count
   end
   
   private

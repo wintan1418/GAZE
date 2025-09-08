@@ -1,1 +1,1 @@
-web: bundle exec rails db:prepare && bundle exec rails server -p $PORT -e $RAILS_ENV
+web: bundle exec rails server -p $PORT -e $RAILS_ENV

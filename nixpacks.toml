@@ -1,17 +1,14 @@
 [phases.setup]
-nixPkgs = ["nodejs_20", "npm-9_x"]
+nixPkgs = ["nodejs"]
 
 [phases.install]
-cmds = [
-  "bundle install",
-  "npm install"
-]
+cmds = ["bundle install", "npm install"]
 
-[phases.build]
+[phases.build] 
 cmds = [
   "npm run build:css",
-  "SECRET_KEY_BASE_DUMMY=1 RAILS_MASTER_KEY=00000000000000000000000000000000 bundle exec rails assets:precompile"
+  "bundle exec rails assets:precompile"
 ]
 
 [start]
-cmd = "bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0 -p $PORT"
+cmd = "bundle exec rails server -b 0.0.0.0 -p $PORT"

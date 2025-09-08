@@ -59,7 +59,7 @@ RUN bundle exec bootsnap precompile app/ lib/
 RUN npm run build:css
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 RAILS_MASTER_KEY=precompile_dummy ./bin/rails assets:precompile
+RUN SECRET_KEY_BASE_DUMMY=1 RAILS_MASTER_KEY=precompile_dummy_key_32_chars_long ./bin/rails assets:precompile
 
 
 RUN rm -rf node_modules

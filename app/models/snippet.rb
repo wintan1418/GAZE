@@ -13,7 +13,7 @@ class Snippet < ApplicationRecord
   has_many :stacks, through: :stack_snippets
   
   # Enums
-  enum visibility: { private_snippet: 0, public_snippet: 1 }
+  enum :visibility, { private_snippet: 0, public_snippet: 1 }
   
   # Validations
   validates :title, presence: true, length: { maximum: 255 }

@@ -5,7 +5,7 @@ class Collection < ApplicationRecord
   has_many :snippets, through: :collection_snippets
   
   # Enums
-  enum visibility: { private_collection: 0, public_collection: 1 }
+  enum :visibility, { private_collection: 0, public_collection: 1 }
   
   # Validations
   validates :name, presence: true, length: { maximum: 255 }

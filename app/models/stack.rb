@@ -6,7 +6,7 @@ class Stack < ApplicationRecord
   has_many :stack_snippets, dependent: :destroy
   has_many :snippets, through: :stack_snippets
   
-  enum visibility: { private_stack: 0, public_stack: 1 }
+  enum :visibility, { private_stack: 0, public_stack: 1 }
   
   validates :name, presence: true, length: { maximum: 100 }
   validates :description, length: { maximum: 500 }

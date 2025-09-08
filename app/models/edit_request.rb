@@ -5,7 +5,7 @@ class EditRequest < ApplicationRecord
   belongs_to :approver, class_name: 'User', optional: true
   
   # Enums
-  enum status: { pending: 'pending', approved: 'approved', denied: 'denied', revoked: 'revoked' }
+  enum :status, { pending: 'pending', approved: 'approved', denied: 'denied', revoked: 'revoked' }
   
   # Validations
   validates :message, length: { maximum: 500 }

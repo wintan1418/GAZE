@@ -10,7 +10,7 @@ cmds = [
 [phases.build]
 cmds = [
   "npm run build:css",
-  "bundle exec rails assets:precompile"
+  "SECRET_KEY_BASE_DUMMY=1 RAILS_MASTER_KEY=precompile_dummy bundle exec rails assets:precompile"
 ]
 
 [start]

@@ -20,6 +20,9 @@ Rails.application.configure do
   # key such as config/credentials/production.key. This key is used to decrypt credentials (and other encrypted files).
   config.require_master_key = true
 
+  # Allow assets to compile without master key
+  config.assets.initialize_on_precompile = false if ENV['SECRET_KEY_BASE_DUMMY']
+
   # Enable serving static files from the `/public` folder (turn on if using Render.com or similar)
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || Rails.env.production?
 

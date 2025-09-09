@@ -1,1 +1,1 @@
-web: RAILS_ENV=production bundle exec rails db:create db:migrate && bundle exec rails server -p $PORT
+web: RAILS_ENV=production bundle exec rails db:create db:migrate && RAILS_ENV=production bundle exec rails server -b 0.0.0.0 -p $PORT

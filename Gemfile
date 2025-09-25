@@ -20,7 +20,7 @@ gem "cssbundling-rails"
 gem "jbuilder"
 
 # Code syntax highlighting
-gem "rouge", "~> 4.2"
+gem "rouge", "~> 4.6"
 
 # Pagination
 gem "pagy", "~> 6.2"

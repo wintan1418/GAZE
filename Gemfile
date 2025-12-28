@@ -23,7 +23,7 @@ gem "jbuilder"
 gem "rouge", "~> 4.2"
 
 # Pagination
-gem "pagy", "~> 6.2"
+gem "pagy", "~> 43.0"
 
 # Friendly URLs
 gem "friendly_id", "~> 5.5"
